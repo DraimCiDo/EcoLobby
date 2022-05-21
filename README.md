@@ -5,7 +5,6 @@ Support for 2 languages and much more.
 The plugin can be fully customized.
 
 [SpigotMC.org](https://www.spigotmc.org/resources/ecolobby-for-lobby-plugin.101547/)
-
 [SpigotMC.ru](https://spigotmc.ru/resources/ecolobby-plagina-dlja-lobbi.998/)
 ## Features of EcoLobby
  - Dual language support
