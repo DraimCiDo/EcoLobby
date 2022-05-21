@@ -1,11 +1,10 @@
 # EcoLobby
-![Java](https://img.shields.io/badge/Java-8%2B-brightgreen) \
 This is a lobby plugin that can help you customize your lobby.  
 Support for 2 languages and much more.  
 The plugin can be fully customized.
 
 ## Features of EcoLobby
- - Dual language support
+- Dual language support
 - Hiding messages about entry, exit, etc.
 - 2 types of greetings in chat and on the screen
 - Disabling player abilities such as: Movement, Taking damage
@@ -16,8 +15,7 @@ The plugin can be fully customized.
 - Hex color support(1.16+)
 ## Downloads
 [SpigotMC.org](https://www.spigotmc.org/resources/ecolobby-for-lobby-plugin.101547/) \
-[SpigotMC.ru](https://spigotmc.ru/resources/ecolobby-plagina-dlja-lobbi.998/)
-
+[SpigotMC.ru](https://spigotmc.ru/resources/ecolobby-plagina-dlja-lobbi.998/) \
 [Github releases](https://github.com/Baraban4ik/EcoLobby/releases)
 ## Bugs and Feedback
 For bugs, questions and discussions please use the [Github Issues](https://github.com/Baraban4ik/EcoLobby/issues).
