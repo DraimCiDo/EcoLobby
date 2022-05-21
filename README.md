@@ -1,7 +1,7 @@
 # EcoLobby
 
 This is a lobby plugin that can help you customize your lobby.  
-Do not judge strictly this is my first plugin. Support for 2 languages and much more.  
+Support for 2 languages and much more.  
 The plugin can be fully customized.
 
 [SpigotMC.org](https://www.spigotmc.org/resources/ecolobby-for-lobby-plugin.101547/)
