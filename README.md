@@ -1,5 +1,5 @@
 # EcoLobby
-![Java](https://img.shields.io/badge/Java-8%2B-brightgreen)
+![Java](https://img.shields.io/badge/Java-8%2B-brightgreen) \
 This is a lobby plugin that can help you customize your lobby.  
 Support for 2 languages and much more.  
 The plugin can be fully customized.
