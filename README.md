@@ -18,6 +18,6 @@ The plugin can be fully customized.
 [SpigotMC.org](https://www.spigotmc.org/resources/ecolobby-for-lobby-plugin.101547/) \
 [SpigotMC.ru](https://spigotmc.ru/resources/ecolobby-plagina-dlja-lobbi.998/) \
 
-[Github releases] (https://github.com/Baraban4ik/EcoLobby/releases)
+[Github releases](https://github.com/Baraban4ik/EcoLobby/releases)
 ## Bugs and Feedback
 For bugs, questions and discussions please use the [Github Issues](https://github.com/Baraban4ik/EcoLobby/issues).
