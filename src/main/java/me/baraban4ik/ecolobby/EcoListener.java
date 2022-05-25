@@ -80,14 +80,19 @@ public class EcoListener implements Listener {
         }
         player.setGameMode(GameMode.valueOf(c.getString("settings.gamemode").toUpperCase()));
         player.setLevel(c.getInt("settings.level-exp"));
+        player.setMaxHealth(c.getDouble("settings.player.health"));
+
         Events.addEffects(player, c.getStringList("settings.effects"));
+        if (c.getBoolean("settings.music.enabled")) {
+            Events.music(player, c.getString("settings.music.disk"));
+        }
     }
 
     @EventHandler
     public void jumpVoid(PlayerMoveEvent e) {
 
         Player player = e.getPlayer();
-        if (c.getBoolean("settings.player-abilities.jump-to-void")) {
+        if (c.getBoolean("settings.player.jump-to-void")) {
             if (player.getLocation().getY() < 0.0D && s.getString("spawn.x") != null && s.getString("spawn.y") != null) {
                 Events.tpSpawn(player);
                 Chat.sendMessage(player, m.getString("jump-to-void", "You fell into the void, I returned you to spawn."));
@@ -119,7 +124,7 @@ public class EcoListener implements Listener {
     @EventHandler
     public void move(PlayerMoveEvent e) {
         Player player = e.getPlayer();
-        if (c.getBoolean("settings.player-abilities.movements")) {
+        if (c.getBoolean("settings.player.movements")) {
             if (!player.hasPermission("ecolobby.bypass.move")) {
                 Location from = e.getFrom().clone();
                 Location to = e.getTo();
@@ -135,7 +140,7 @@ public class EcoListener implements Listener {
     public void breakBlock(BlockBreakEvent e) {
         Player player = e.getPlayer();
         if (!player.hasPermission("ecolobby.bypass.break")) {
-            if (c.getBoolean("settings.player-abilities.breaking-blocks")) {
+            if (c.getBoolean("settings.player.breaking-blocks")) {
                 e.setCancelled(true);
             }
         }
@@ -144,20 +149,20 @@ public class EcoListener implements Listener {
     public void placeBlock(BlockPlaceEvent e) {
         Player player = e.getPlayer();
         if (!player.hasPermission("ecolobby.bypass.place")) {
-            if (c.getBoolean("settings.player-abilities.place-blocks")) {
+            if (c.getBoolean("settings.player.place-blocks")) {
                 e.setCancelled(true);
             }
         }
     }
     @EventHandler
     public void damagePlayer(EntityDamageEvent e) {
-        if (e.getEntity() instanceof Player && c.getBoolean("settings.player-abilities.damage")) {
+        if (e.getEntity() instanceof Player && c.getBoolean("settings.player.damage")) {
             e.setCancelled(true);
         }
     }
     @EventHandler
     public void hungerPlayer(FoodLevelChangeEvent e) {
-        if (c.getBoolean("settings.player-abilities.hunger")) {
+        if (c.getBoolean("settings.player.hunger")) {
             e.setCancelled(true);
         }
     }

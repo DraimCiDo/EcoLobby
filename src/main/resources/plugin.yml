@@ -1,6 +1,7 @@
 name: EcoLobby
 version: '${project.version}'
 main: me.baraban4ik.ecolobby.EcoLobby
+author: Baraban4ik
 softdepend: [PlaceholderAPI]
 api-version: 1.16
 

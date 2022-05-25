@@ -7,6 +7,7 @@ import me.baraban4ik.ecolobby.utils.Chat;
 import me.baraban4ik.ecolobby.utils.Events;
 import me.baraban4ik.ecolobby.utils.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -16,7 +17,8 @@ import java.util.List;
 public final class EcoLobby extends JavaPlugin {
 
     private Configurations configurations = new Configurations(this, "config.yml", "lang/en.yml", "lang/ru.yml", "spawn.yml");
-    private final Chat chat = new Chat(configurations.get("lang/" + configurations.get("config.yml").get("main.lang") + ".yml"));
+
+    private final Chat chat = new Chat(configurations.get("lang/" + configurations.get("config.yml").get("main.lang") + ".yml"), configurations.get("config.yml"));
     private final Events events = new Events(configurations.get("config.yml"), configurations.get("spawn.yml"));
 
     public final List<String> ENABLE_MESSAGE = Arrays.asList

@@ -1,9 +1,6 @@
 package me.baraban4ik.ecolobby.utils;
 
-import org.bukkit.Bukkit;
-import org.bukkit.GameRule;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -87,6 +84,9 @@ public class Events {
             }
         }
     }
-
+    public static void music(Player p, String s) {
+        Sound sound = Sound.valueOf("MUSIC_DISC_" + s.toUpperCase());
+        p.playSound(p.getLocation(), sound, 1, 0);
+    }
 }
 

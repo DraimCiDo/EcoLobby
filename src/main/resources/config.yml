@@ -28,6 +28,9 @@ settings:
   # Включить или выключить команды, use-commands - Возможность писать некоторые команды.
   # Enable or disable commands, use-commands - Ability to write some commands.
   enable-commands: true
+  # НЕ ИЗМЕНЯЙТЕ ЭТО, ЕСЛИ ВЫ НЕ ЗНАЕТЕ, ЧТО ЭТО ТАКОЕ!!
+  # DO NOT CHANGE THIS IF YOU DON'T KNOW WHAT IT IS!!
+  hex-pattern: "#[a-fA-F0-9]{6}"
   # Приветственное сообщение виде title.
   # Greeting message in the form of title.
   title-motd:
@@ -40,20 +43,26 @@ settings:
   action-bar-motd:
     enabled: true
     text: "Best of luck"
+  # Музыка, что тут ещё скажешь. Список диском можете посмотреть здесь: https://minecraft.fandom.com/ru/wiki/Пластинка
+  # Music, what else can I say. You can see the list of disks here: https://minecraft.fandom.com/wiki/Music_Disc
+  music:
+    enabled: true
+    disk: "13"
   # Отключает видимость игроков для друг друга.
   # Disables visibility of players to each other.
   player-hide: false
   # Отключает возможности игроков. damage - урон, breaking-blocks - ломать блоки,
-  # place-blocks - ставить блоки, hunger - голод, movements - движение, jump-to-void - прыжок в пустоту.
+  # place-blocks - ставить блоки, hunger - голод, movements - движение, jump-to-void - прыжок в пустоту, health - Максимальное хп.
 
-  # Disables player options. damage, breaking-blocks, place blocks, hunger, movements, jump-to-void.
-  player-abilities:
+  # Disables player options. damage, breaking-blocks, place blocks, hunger, movements, jump-to-void, health - max health.
+  player:
     damage: true
     breaking-blocks: true
     place-blocks: true
     hunger: true
     movements: true
     jump-to-void: true
+    health: 20
   # Список команд, которые будут доступны, работает только с enable-commands: false.
   # The list of commands that will be available only works with enable-commands: false.
   use-commands:

@@ -18,14 +18,16 @@ import java.util.regex.Pattern;
 public class Chat {
 
     private static FileConfiguration m;
+    private static FileConfiguration c;
 
-    public Chat(FileConfiguration mess) {
+    public Chat(FileConfiguration mess, FileConfiguration cfg) {
         m = mess;
+        c = cfg;
     }
 
     public static String color(String s) {
         if (EcoLobby.getVersion() >= 1.16f) {
-            Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
+            Pattern pattern = Pattern.compile(Objects.requireNonNull(c.getString("settings.hex-pattern", "#[a-fA-F0-9]{6}")));
             Matcher match = pattern.matcher(s);
 
             while (match.find()) {
