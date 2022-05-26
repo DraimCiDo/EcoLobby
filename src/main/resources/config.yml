@@ -48,6 +48,14 @@ settings:
   music:
     enabled: true
     disk: "13"
+  # Очистка инвентаря или чата при заходе.
+  # Clear inventory or chat on login.
+  join-clear:
+    chat: true
+    inventory: true
+  # Включает возможность игрокам летать
+  # Enables players to fly
+  player-fly: false
   # Отключает видимость игроков для друг друга.
   # Disables visibility of players to each other.
   player-hide: false

@@ -14,6 +14,9 @@ The plugin can be fully customized.
 - Placeholder API Support
 - Hex color support(1.16+)
 - Music from discs
+- Chat cleanup
+- Cleaning Inventory
+- fly mode
 ## Downloads
 [SpigotMC.org](https://www.spigotmc.org/resources/ecolobby-for-lobby-plugin.101547/) \
 [SpigotMC.ru](https://spigotmc.ru/resources/ecolobby-plagina-dlja-lobbi.998/) \

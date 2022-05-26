@@ -27,9 +27,9 @@ public class EcoListener implements Listener {
 
     public EcoListener(FileConfiguration cfg,FileConfiguration mess, FileConfiguration spawn, EcoLobby plugin) {
         this.plugin = plugin;
-        this.c = cfg;
-        this.m = mess;
-        this.s = spawn;
+        c = cfg;
+        m = mess;
+        s = spawn;
     }
 
     private static final List<String> MOTD = Arrays.asList
@@ -86,11 +86,21 @@ public class EcoListener implements Listener {
         if (c.getBoolean("settings.music.enabled")) {
             Events.music(player, c.getString("settings.music.disk"));
         }
+        if (c.getBoolean("settings.join-clear.chat")) {
+            for(int i = 0; i < 120; ++i) {
+                player.sendMessage("");
+            }
+        }
+        if (c.getBoolean("settings.join-clear.inventory")) {
+            player.getInventory().clear();
+        }
+        if (c.getBoolean("settings.player-fly")) {
+            player.setFlying(true);
+        }
     }
 
     @EventHandler
     public void jumpVoid(PlayerMoveEvent e) {
-
         Player player = e.getPlayer();
         if (c.getBoolean("settings.player.jump-to-void")) {
             if (player.getLocation().getY() < 0.0D && s.getString("spawn.x") != null && s.getString("spawn.y") != null) {
