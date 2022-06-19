@@ -3,13 +3,15 @@ prefix: "&8|&a&lEco&f&lLobby&8| &f"
 # Поддержка HEX цветов(1.16+) - #hex код. Пример: #fffff
 
 help:
-  - "      &7&m=-=-=-=-&a&lEco&f&lLobby&7&m-=-=-=-="
   - ""
-  - "  /ecolobby reload &8- &aПерезагрузка плагина."
-  - "  /ecolobby setspawn &8- &aУстановка спавна."
-  - "  /ecolobby spawn &8- &aТелепорт на спавн."
+  - "        &a&lEco&f&lLobby &8— &7Помощник по командам"
   - ""
-  - "      &7&m=-=-=-=-&a&lEco&f&lLobby&7&m-=-=-=-="
+  - "&7/ecolobby reload &8— &aПерезагрузка конфигурации плагина."
+  - "     &7/ecolobby setspawn &8— &aУстановка спавна."
+  - "      &7/ecolobby spawn &8— &aТелепорт на спавн."
+  - ""
+  - "             &a&lEco&f&lLobby &7от &aBaraban4ik"
+  - ""
 motd:
   - ""
   - "                    &8[&a&lServer Name&8]"
@@ -29,3 +31,5 @@ spawn-null: "{prfx}Спауна не существует, я не могу те
 jump-to-void: "{prfx}Ты упал в пустоту, я вернул тебя на спавн."
 disable-chat: "{prfx}Извините, но вы не можете использовать чат!"
 disable-commands: "{prfx}Извините, но вы не можете использовать команды!"
+whitelist-kick: "{prfx}Вы не находитесь в белом списке сервера"
+blacklist-kick: "{prfx}Вы не находитесь в чёрном списке сервера"

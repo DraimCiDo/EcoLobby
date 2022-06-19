@@ -6,7 +6,7 @@
 
     <groupId>me.baraban4ik</groupId>
     <artifactId>EcoLobby</artifactId>
-    <version>2.2</version>
+    <version>3.0</version>
     <packaging>jar</packaging>
 
     <name>EcoLobby</name>

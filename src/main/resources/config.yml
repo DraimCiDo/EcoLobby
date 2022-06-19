@@ -48,11 +48,29 @@ settings:
   music:
     enabled: true
     disk: "13"
-  # Очистка инвентаря или чата при заходе.
-  # Clear inventory or chat on login.
-  join-clear:
-    chat: true
-    inventory: true
+  join:
+    # Белый список игроков, которым разрешён вход
+    # White list of players who are allowed to enter
+    whitelist:
+      enabled: true
+      players:
+        - "staff"
+        - "Baraban4ik"
+    # Чёрный список игроков, которым не разрешён вход
+    # Blacklist of players who are not allowed to enter
+    balcklist:
+      enabled: false
+      players:
+        - "staff"
+        - "Baraban4ik"
+    # Включть свечение для игрока
+    # Enable glow for the player
+    glow: false
+    # Очистка инвентаря или чата при заходе.
+    # Clear inventory or chat on login.
+    clear:
+      chat: true
+      inventory: true
   # Включает возможность игрокам летать
   # Enables players to fly
   player-fly: false
@@ -62,14 +80,16 @@ settings:
   # Отключает возможности игроков. damage - урон, breaking-blocks - ломать блоки,
   # place-blocks - ставить блоки, hunger - голод, movements - движение, jump-to-void - прыжок в пустоту, health - Максимальное хп.
 
-  # Disables player options. damage, breaking-blocks, place blocks, hunger, movements, jump-to-void, health - max health.
+  # Disables player options. damage, breaking-blocks, place-blocks, hunger, movements, jump-to-void, health - max health.
   player:
     damage: true
     breaking-blocks: true
     place-blocks: true
     hunger: true
     movements: true
-    jump-to-void: true
+    jump-to-void:
+      enabled: true
+      height: 0.0
     health: 20
   # Список команд, которые будут доступны, работает только с enable-commands: false.
   # The list of commands that will be available only works with enable-commands: false.

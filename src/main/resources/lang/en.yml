@@ -2,13 +2,15 @@ prefix: "&8|&a&lEco&f&lLobby&8| &f"
 # Available placeholders: {player} - Player name, {prfx} - prefix, set in translation files
 # Support for HEX colors (1.16+) - #hex code. Example: #fffff
 help:
-  - "      &7&m=-=-=-=-&a&lEco&f&lLobby&7&m-=-=-=-="
   - ""
-  - "  /ecolobby reload &8- &aReload plugin."
-  - "  /ecolobby setspawn &8- &aSet spawn."
-  - "  /ecolobby spawn &8- &aTeleport to spawn."
+  - "           &a&lEco&f&lLobby &8— &7Helper commands"
   - ""
-  - "      &7&m=-=-=-=-&a&lEco&f&lLobby&7&m-=-=-=-="
+  - "    &7/ecolobby reload &8— &aReload config plugin."
+  - "        &7/ecolobby setspawn &8— &aSet spawn."
+  - "      &7/ecolobby spawn &8— &aTeleport to spawn."
+  - ""
+  - "             &a&lEco&f&lLobby &7by &aBaraban4ik"
+  - ""
 motd:
   - ""
   - "                    &8[&a&lServer Name&8]"
@@ -18,7 +20,7 @@ motd:
   - ""
   - "   &fHope you &alike &fit here!"
   - ""
-  -
+
 no-permission: "{prfx}You don't have permission!"
 no-player: "{prfx}This command is only available to players!"
 plugin-reloaded: "{prfx}Plugin successfully reloaded!"
@@ -28,3 +30,5 @@ spawn-null: "{prfx}Spawn doesn't exist, I can't teleport you!"
 jump-to-void: "{prfx}You fell into the void, I returned you to spawn."
 disable-chat: "{prfx}Sorry, but you can't use chat!"
 disable-commands: "{prfx}Sorry, but you can't use commands!"
+whitelist-kick: "{prfx}You are not whitelisted on the server"
+blacklist-kick: "{prfx}You are not blacklisted on the server"

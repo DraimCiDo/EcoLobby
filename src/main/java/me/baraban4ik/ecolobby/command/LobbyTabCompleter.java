@@ -9,11 +9,11 @@ import java.util.ArrayList;
 
 import java.util.List;
 
-public class EcoTabCompleter implements TabCompleter {
-
+public class LobbyTabCompleter implements TabCompleter {
     public List<String> complete(CommandSender sender, String[] args) {
         return null;
     }
+
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         return filter(complete(sender, args), args);
