@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.baraban4ik</groupId>
-    <artifactId>EcoLobby</artifactId>
-    <version>3.0</version>
+    <artifactId>ecolobby</artifactId>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>EcoLobby</name>
@@ -71,7 +71,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.3-R0.1-SNAPSHOT</version>
+            <version>1.19.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

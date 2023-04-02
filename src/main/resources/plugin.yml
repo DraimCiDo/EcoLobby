@@ -3,12 +3,15 @@ version: '${project.version}'
 main: me.baraban4ik.ecolobby.EcoLobby
 author: Baraban4ik
 softdepend: [PlaceholderAPI]
-api-version: 1.16
+api-version: 1.19
 
 commands:
   ecolobby:
     usage: /<command>
     aliases: [el, ecol, elobby]
+  spawn:
+    usage: /<command>
+    aliases: [espawn, elspawn]
 
 permissions:
   ecolobby.*:
@@ -21,6 +24,8 @@ permissions:
     default: op
   ecolobby.reload:
     default: op
+  ecolobby.give:
+    default: op
   ecolobby.bypass.*:
     default: op
     children:
@@ -29,6 +34,8 @@ permissions:
       ecolobby.bypass.commands: true
       ecolobby.bypass.break: true
       ecolobby.bypass.place: true
+      ecolobby.bypass.moveitems: true
+      ecolobby.bypass.dropitems: true
   ecolobby.bypass.move:
     default: op
   ecolobby.bypass.chat:
@@ -38,4 +45,8 @@ permissions:
   ecolobby.bypass.break:
     default: op
   ecolobby.bypass.place:
+    default: op
+  ecolobby.bypass.moveitems:
+    default: op
+  ecolobby.bypass.dropitems:
     default: op

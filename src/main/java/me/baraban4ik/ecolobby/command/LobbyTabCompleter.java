@@ -19,8 +19,8 @@ public class LobbyTabCompleter implements TabCompleter {
         return filter(complete(sender, args), args);
     }
 
-    private  List<String> filter(List<String> list, String[] args) {
-        if(list == null) return null;
+    private List<String> filter(List<String> list, String[] args) {
+        if (list == null) return null;
         String last = args[args.length - 1];
         List<String> result = new ArrayList<>();
         for (String arg : list) {

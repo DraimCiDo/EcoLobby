@@ -11,9 +11,9 @@ import org.bukkit.plugin.Plugin;
 
 public class Configurations
 {
-    private Map<String, Map.Entry<FileConfiguration, File>> configurations = new HashMap<> ();
+    private final Map<String, Map.Entry<FileConfiguration, File>> configurations = new HashMap<> ();
 
-    private List<String> configurationsNames;
+    private final List<String> configurationsNames;
 
     private final Plugin plugin;
 
@@ -74,14 +74,6 @@ public class Configurations
                 .map(Map.Entry::getKey)
                 .orElse(null);
     }
-
-    private File getFile(String configurationName)
-    {
-        return this.getEntry(configurationName)
-                .map(Map.Entry::getValue)
-                .orElse(null);
-    }
-
 
     public FileConfiguration save(FileConfiguration fileConfiguration, String s) {
         try {

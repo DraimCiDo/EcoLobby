@@ -1,96 +1,93 @@
 #-=-=-=-=-=-=-=-=-=-=EcoLobby-=-=-=-=-=-=-=-=-=#
 #-=                                          =-#
 #-=             Author: Baraban4ik           =-#
-#-=             Version: ${project.version}                 =-#
+#-=             Version: ${project.version}               =-#
 #-=                                          =-#
 #-=-=-=-=-=-=-=-=-=-=EcoLobby-=-=-=-=-=-=-=-=-=#
 
-# Доступные плейсхолдеры: {player} - Имя игрока, {prfx} - префикс, настраивается в файлах перевода
-# Available placeholders: {player} - Player name, {prfx} - prefix, set in translation files
+config-version: ${project.version}
+# Изменяет язык плагина, доступные языки: ru, en.
+# Changes the language of the plugin, available languages: ru, en.
+lang: ru
+check-update: true
 
-# Поддержка HEX цветов(1.16+) - #hex код. Пример: #fffff
-# Support for HEX colors (1.16+) - #hex code. Example: #fffff
-main:
-  config-version: ${project.version}
-  # Изменяет язык плагина, доступные языки: ru, en.
-  # Changes the plugin language, available languages: ru, en.
-  lang: ru
-settings:
+# Доступные плейсхолдеры: {player} - Имя игрока, Новая строка - {NL} тоже самое что и \n, {prfx} - префикс, настраивается в файлах перевода
+# Available placeholders: {player} - Player name, New string - {NL} same as \n, {prfx} - prefix, configurable in translation files
+
+# Поддержка HEX цветов(1.16+) - &#hex код. Пример: &#fffff
+# HEX color support(1.16+) - &#hex code. Example: &#fffff.
+
+# НЕ ИЗМЕНЯЙТЕ ЭТО, ЕСЛИ ВЫ НЕ ЗНАЕТЕ, ЧТО ЭТО ТАКОЕ!
+# DON'T CHANGE IT IF YOU DON'T KNOW WHAT IT IS!
+hex-pattern: "&#[a-fA-F0-9]{6}"
+
+
+  #========================#
+  #   Основные настройки   #
+  #   Main settings        #
+  #========================#
+Main:
   # Отключает сообщения о входе, выходе, смерти и тд.
   # Disables messages about entry, exit, death, etc.
-  enable-hidestream: true
+  hidestream: true
+  # Отключает видимость игроков для друг друга.
+  # Disables the visibility of players to each other.
+  hide-players: true
   # Включает сообщение приветствия, настройка в файле перевода.
-  # Includes greeting message, setting in translation file
-  enable-motd: true
-  # Включить или выключить возможность писать в чат.
-  # Enable or disable the ability to write to chat.
-  enable-chat: true
-  # Включить или выключить команды, use-commands - Возможность писать некоторые команды.
-  # Enable or disable commands, use-commands - Ability to write some commands.
-  enable-commands: true
-  # НЕ ИЗМЕНЯЙТЕ ЭТО, ЕСЛИ ВЫ НЕ ЗНАЕТЕ, ЧТО ЭТО ТАКОЕ!!
-  # DO NOT CHANGE THIS IF YOU DON'T KNOW WHAT IT IS!!
-  hex-pattern: "#[a-fA-F0-9]{6}"
+  # Enables the welcome message, setting in the translation file.
+  motd-message: false
   # Приветственное сообщение виде title.
-  # Greeting message in the form of title.
+  # Welcome message as title.
   title-motd:
-    enabled: true
+    enabled: false
     title-text: "Welcome to the &aServerName"
     subtitle-text: "Have a nice game"
     duration: 5
   # Приветственное сообщение виде action bar.
-  # Greeting message in the form of action bar.
+  # Welcome message as an action bar.
   action-bar-motd:
-    enabled: true
+    enabled: false
     text: "Best of luck"
-  # Музыка, что тут ещё скажешь. Список диском можете посмотреть здесь: https://minecraft.fandom.com/ru/wiki/Пластинка
-  # Music, what else can I say. You can see the list of disks here: https://minecraft.fandom.com/wiki/Music_Disc
-  music:
-    enabled: true
-    disk: "13"
-  join:
-    # Белый список игроков, которым разрешён вход
-    # White list of players who are allowed to enter
-    whitelist:
-      enabled: true
-      players:
-        - "staff"
-        - "Baraban4ik"
-    # Чёрный список игроков, которым не разрешён вход
-    # Blacklist of players who are not allowed to enter
-    balcklist:
-      enabled: false
-      players:
-        - "staff"
-        - "Baraban4ik"
-    # Включть свечение для игрока
-    # Enable glow for the player
-    glow: false
-    # Очистка инвентаря или чата при заходе.
-    # Clear inventory or chat on login.
-    clear:
-      chat: true
-      inventory: true
-  # Включает возможность игрокам летать
-  # Enables players to fly
-  player-fly: false
-  # Отключает видимость игроков для друг друга.
-  # Disables visibility of players to each other.
-  player-hide: false
-  # Отключает возможности игроков. damage - урон, breaking-blocks - ломать блоки,
-  # place-blocks - ставить блоки, hunger - голод, movements - движение, jump-to-void - прыжок в пустоту, health - Максимальное хп.
 
-  # Disables player options. damage, breaking-blocks, place-blocks, hunger, movements, jump-to-void, health - max health.
-  player:
-    damage: true
-    breaking-blocks: true
-    place-blocks: true
-    hunger: true
-    movements: true
-    jump-to-void:
-      enabled: true
-      height: 0.0
-    health: 20
+  #===========================================#
+  #   Настройки при подключении на сервер     #
+  #   Settings when connecting to the server  #
+  #===========================================#
+Join:
+  # Белый список игроков, которым разрешён вход
+  # White list of players who are allowed to enter
+  whitelist:
+    enabled: false
+    players:
+      - "staff"
+      - "Baraban4ik"
+  # Чёрный список игроков, которым не разрешён вход
+  # Blacklist of players who are not allowed to enter
+  blacklist:
+    enabled: false
+    players:
+      - "staff"
+      - "Baraban4ik"
+  # Включть свечение для игрока
+  # Enable glow for player
+  glow: false
+  # Очистка инвентаря при выходе, чата при заходе.
+  # Clearing inventory on exit, chat on entry.
+  clear:
+    chat: false
+    inventory: true
+
+  #=======================#
+  #   Настройки игроков   #
+  #   Settings players    #
+  #=======================#
+Player:
+  # Включить или выключить возможность писать в чат.
+  # Enable or disable the ability to write in chat.
+  enable-chat: false
+  # Включить или выключить команды, use-commands - Возможность писать некоторые команды.
+  # Enable or disable commands, use-commands - Ability to write some commands.
+  enable-commands: false
   # Список команд, которые будут доступны, работает только с enable-commands: false.
   # The list of commands that will be available only works with enable-commands: false.
   use-commands:
@@ -101,17 +98,71 @@ settings:
     - 'recovery'
     - 'confirm'
     - 'changepassword'
-  # Правила для игровых миров.
-  # Rules for game worlds.
+  # Включает/Отключает возможность игрокам летать
+  # Enables/Disables the ability of players to fly
+  enable-fly: false
+  # Включает/Отключает возможность получать урон
+  # Enables/Disables the ability to take damage
+  enable-damage: false
+  # Включает/Отключает возможность ломать блоки
+  # Enables/Disables the ability to break blocks
+  enable-break-blocks: false
+  # Включает/Отключает возможность ставить блоки
+  # Enables/Disables the ability to place blocks
+  enable-place-blocks: false
+  # Включает/Отключает возможность голодать
+  # Enables/Disables the ability to hunger
+  enable-hunger: false
+  # Включает/Отключает возможность двигаться
+  # Enables/Disables the ability to move
+  enable-movements: true
+  # Установка хп для игрока
+  # Setting the player's health
+  health: 20
+  # Установка скорости для игрока, максимальная: 10, минимальная: -10, дефолтная: 2
+  # Setting the player's speed, max: 10, min: -10, default: 2
+  speed: 6
+  # Установка режима игры
+  # Setting the game mode
+  gamemode: survival
+  # Установка ехп
+  # Setting exp
+  level-exp: 100
+  # Установка эффектов
+  # Setting effects
+  effects:
+#    - 'SPEED:3'
+  # Включить/Отключить телепорт на спавн при прижке в пустоту
+  # Enable/Disable teleport to spawn when you come to the void
+  jump-to-void:
+    enabled: true
+    height: 0.0
+
+  #=========================#
+  #   Настройки придметов   #
+  #   Settings Items        #
+  #=========================#
+Items:
+  # Включает/Отключает возможность перемещать предметы
+  # Enables/Disables the ability to move items
+  move-items: true
+  # Включает/Отключает возможность дропать предметы
+  # Enables/Disables the ability to drop items
+  drop-items: true
+
+  #====================#
+  #   Настройки мира   #
+  #   Settings world   #
+  #====================#
+World:
+  # Установка времени мира
+  # Setting the World Time
+  time-set: 1000
+  # Правила для игрового мира
+  # Rules for the game world
   rules:
     day-light-cycle: false
     weather-cycle: false
     mob-spawning: false
     fire-spread: false
-  # Установка режима игры, ехп, время, эффекты.
-  # Setting the game mode, exp, time, effects
-  gamemode: survival
-  level-exp: 1337
-  time-set: 1000
-  effects:
-    - 'SPEED:3'
+
