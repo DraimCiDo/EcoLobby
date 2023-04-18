@@ -1,86 +1,89 @@
 package me.baraban4ik.ecolobby;
 
-import me.baraban4ik.ecolobby.command.LobbyCommand;
-import me.baraban4ik.ecolobby.command.LobbyTabCompleter;
-import me.baraban4ik.ecolobby.command.SpawnCommand;
+import me.baraban4ik.ecolobby.commands.LobbyCommand;
+import me.baraban4ik.ecolobby.commands.LobbyTabCompleter;
+import me.baraban4ik.ecolobby.commands.SpawnCommand;
 import me.baraban4ik.ecolobby.configurations.Configurations;
+import me.baraban4ik.ecolobby.item.ItemManager;
 import me.baraban4ik.ecolobby.listeners.*;
 import me.baraban4ik.ecolobby.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
+
+import static me.baraban4ik.ecolobby.utils.Chat.sendMessage;
 
 public final class EcoLobby extends JavaPlugin {
 
-    private Configurations config = new Configurations(this, "config.yml", "lang/en.yml", "lang/ru.yml", "spawn.yml");
-
-    public final List<String> ENABLE_MESSAGE = Arrays.asList
-            (
-                    "",
-                    "        §a§lEco§f§lLobby §8— §7Multifunctional lobby",
-                    "",
-                    "              §7Author §8— §aBaraban4ik",
-                    "                 §7Version §8— §a" + this.getDescription().getVersion(),
-                    "",
-                    "             §a§lEco§f§lLobby §7by §aBaraban4ik",
-                    ""
-            );
+    private Configurations configurations = new Configurations(this, "config.yml", "lang/en.yml", "lang/ru.yml", "spawn.yml");
 
     @Override
     public void onEnable() {
-        config.loadConfigurations();
-        ENABLE_MESSAGE.forEach(System.out::println);
+        configurations.loadConfigurations();
+
+        this.updateConfig();
+        this.checkUpdate();
 
         // BStats:
         int pluginId = 14978;
-        Metrics metrics = new Metrics(this, pluginId);
+        new Metrics(this, pluginId);
         // Load utils:
-        chatUtils chat = new chatUtils(config);
-        spawnUtils spawn = new spawnUtils(config);
+        new Chat(configurations);
+        new Utils(configurations);
 
-        if (config.get("config.yml").getBoolean("check-update")) {
-            new UpdateChecker(this, 101547).getVersion(version -> {
-                if (this.getDescription().getVersion().equals(version)) {
-                    getLogger().info("There is not a §anew update §ravailable.");
-                } else {
-                    getLogger().info("There is a §anew update §ravailable.");
-                }
-            });
+        this.registerListeners();
+        this.registerCommands();
+
+        if (Objects.equals(configurations.get("config.yml").getString("Main.lang"), "ru")) {
+            MESSAGES.ENABLE_MESSAGE_RU.forEach((x) -> sendMessage(Bukkit.getConsoleSender(), x));
+            return;
         }
-
-        // Register Listeners:
-        getServer().getPluginManager().registerEvents(new MainListener(config, this), this);
-        getServer().getPluginManager().registerEvents(new JoinListener(config), this);
-        getServer().getPluginManager().registerEvents(new PlayerListener(config), this);
-        getServer().getPluginManager().registerEvents(new WorldListener(config), this);
-        getServer().getPluginManager().registerEvents(new ItemsListener(config), this);
-        // Register Commands
-        getServer().getPluginCommand("ecolobby").setExecutor(new LobbyCommand(this));
-        getServer().getPluginCommand("ecolobby").setTabCompleter(new LobbyTabCompleter());
-        getServer().getPluginCommand("spawn").setExecutor(new SpawnCommand(config));
-
-        checkConfig();
+        MESSAGES.ENABLE_MESSAGE_EN.forEach((x) -> sendMessage(Bukkit.getConsoleSender(), x));
     }
 
     @Override
     public void onDisable() {
-        config = null;
+        configurations = null;
     }
 
     public void reload() {
-        config.reloadConfigurations();
-        checkConfig();
+        configurations.reloadConfigurations();
+        updateConfig();
+    }
+    private void registerListeners() {
+        getServer().getPluginManager().registerEvents(new JoinListener(configurations, this), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(configurations, this), this);
+        getServer().getPluginManager().registerEvents(new WorldListener(configurations), this);
+        getServer().getPluginManager().registerEvents(new ItemsListener(configurations, this), this);
+    }
+    private void registerCommands() {
+        getServer().getPluginCommand("ecolobby").setExecutor(new LobbyCommand(configurations,this));
+        getServer().getPluginCommand("ecolobby").setTabCompleter(new LobbyTabCompleter());
+        getServer().getPluginCommand("spawn").setExecutor(new SpawnCommand(configurations));
+    }
+    private void checkUpdate() {
+        if (configurations.get("config.yml").getBoolean("Main.check-update")) {
+            new UpdateChecker(this, 101547).getVersion(version -> {
+                if (!this.getDescription().getVersion().equals(version)) {
+
+                    if (Objects.equals(configurations.get("config.yml").getString("Main.lang"), "ru")) {
+                        sendMessage(Bukkit.getConsoleSender(), MESSAGES.NEW_VERSION_RU);
+                        return;
+                    }
+                    sendMessage(Bukkit.getConsoleSender(), MESSAGES.NEW_VERSION_EN);
+                }
+            });
+        }
     }
 
-    public void checkConfig() {
-        if (!Objects.equals(config.get("config.yml").getString("config-version"), this.getDescription().getVersion())) {
+    public void updateConfig() {
+        if (!Objects.equals(configurations.get("config.yml").get("Main.config-version"), this.getDescription().getVersion())) {
             File file = new File(this.getDataFolder(), "config.yml");
             file.renameTo(new File(this.getDataFolder(), "config.yml.old"));
-            config.reloadConfigurations();
+
+            configurations.reloadConfigurations();
         }
     }
 

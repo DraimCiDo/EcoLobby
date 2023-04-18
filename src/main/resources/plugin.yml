@@ -26,6 +26,8 @@ permissions:
     default: op
   ecolobby.give:
     default: op
+  ecolobby.help:
+    default: op
   ecolobby.bypass.*:
     default: op
     children:
@@ -36,6 +38,7 @@ permissions:
       ecolobby.bypass.place: true
       ecolobby.bypass.moveitems: true
       ecolobby.bypass.dropitems: true
+      ecolobby.bypass.interact: true
   ecolobby.bypass.move:
     default: op
   ecolobby.bypass.chat:
@@ -49,4 +52,6 @@ permissions:
   ecolobby.bypass.moveitems:
     default: op
   ecolobby.bypass.dropitems:
+    default: op
+  ecolobby.bypass.interact:
     default: op

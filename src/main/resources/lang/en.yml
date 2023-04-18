@@ -1,40 +1,29 @@
-prefix: "&8|&a&lEco&f&lLobby&8| &f"
+prefix: "{NL}  &l&fᴇ&a&lʟ &8|  &7"
 # Available placeholders: {player} - Player name, New string - {NL} same as \n, {prfx} - prefix, configurable in translation files
 # HEX color support(1.16+) - &#hex code. Example: &#fffff.
 
-help:
-  - ""
-  - "           &a&lEco&f&lLobby &8— &7Helper commands"
-  - ""
-  - "    &7/ecolobby reload &8— &aReload config plugin."
-  - "        &7/ecolobby setspawn &8— &aSet spawn."
-  - "      &7/spawn &8— &aTeleport to spawn."
-  - ""
-  - "             &a&lEco&f&lLobby &7by &aBaraban4ik"
-  - ""
 motd:
   - ""
-  - "                    &8[&a&lServer Name&8]"
+  - "                 &7[ &a&lServer Name &7]"
   - ""
-  - "   &fwelcome {player} to the server &a&lServer Name"
-  - "   &fThere are &amany &fadventures waiting for you here."
+  - "   &fWelcome &a{player} &fto the server &a&lServer Name"
+  - "   &fThere are many adventures waiting for you."
   - ""
-  - "   &fHope you &alike &fit here!"
+  - "        &fWe hope you enjoy your time here!"
   - ""
 
 
-plugin-reloaded: "{prfx}Plugin successfully reloaded!"
+plugin-reloaded: "{prfx}Plugin successfully reloaded! {NL} "
+no-permission: "{prfx}You don't have permission! {NL} "
 
-no-permission: "{prfx}You don't have permission!"
-no-player: "{prfx}This command is only available to players!"
+successfully-setspawn: "{prfx}Spawn successfully installed. {NL} "
+successfully-spawn: "{prfx}You have been teleported to the spawn. {NL} "
+null-spawn: "{prfx}There is no spawn, it is impossible to teleport you! {NL} "
 
-successfully-setspawn: "{prfx}Spawn successfully installed."
-successfully-spawn: "{prfx}You were teleported to a spawn."
-spawn-null: "{prfx}There is no spawn, it is impossible to teleport you!"
-jump-to-void: "{prfx}You fell into the void, I brought you back to the spawn."
+jump-to-void: "{prfx}You jumped into the void, I teleported you back to the spawn. {NL} "
 
-disable-chat: "{prfx}Sorry, you can't use chat!"
-disable-commands: "{prfx}Sorry, you can't use commands!"
+disable-chat: "{prfx}I'm sorry, but you can't use chat! {NL} "
+disable-commands: "{prfx}Sorry, you can't use commands! {NL} "
 
-whitelist-kick: "{prfx}You are not on the whitelist server."
-blacklist-kick: "{prfx}You are not on the server's blacklist."
+whitelist-kick: "You are not on the server whitelist."
+blacklist-kick: "You are on the server's blacklist."

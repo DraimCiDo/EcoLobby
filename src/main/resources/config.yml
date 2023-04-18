@@ -5,49 +5,30 @@
 #-=                                          =-#
 #-=-=-=-=-=-=-=-=-=-=EcoLobby-=-=-=-=-=-=-=-=-=#
 
-config-version: ${project.version}
+# Доступные плейсхолдеры: {player} - Имя игрока, Новая строка - {NL} тоже самое что и \n, {prfx} - префикс, настраивается в файлах перевода
+# Поддержка HEX цветов(1.16+) - &#hex код. Пример: &#fffff
+# Available placeholders: {player} - Player name, New string - {NL} same as \n, {prfx} - prefix, configurable in translation files
+# HEX color support(1.16+) - &#hex code. Example: &#fffff.
+
+
+#================================#
+#   Основные настройки плагина   #
+#   Main settings of the plugin  #
+#================================#
+Main:
+  # НЕ ИЗМЕНЯЙТЕ ЭТО!
+  # DON'T CHANGE IT!
+  config-version: ${project.version}
+
 # Изменяет язык плагина, доступные языки: ru, en.
 # Changes the language of the plugin, available languages: ru, en.
-lang: ru
-check-update: true
-
-# Доступные плейсхолдеры: {player} - Имя игрока, Новая строка - {NL} тоже самое что и \n, {prfx} - префикс, настраивается в файлах перевода
-# Available placeholders: {player} - Player name, New string - {NL} same as \n, {prfx} - prefix, configurable in translation files
-
-# Поддержка HEX цветов(1.16+) - &#hex код. Пример: &#fffff
-# HEX color support(1.16+) - &#hex code. Example: &#fffff.
+  lang: ru
+  check-update: true
 
 # НЕ ИЗМЕНЯЙТЕ ЭТО, ЕСЛИ ВЫ НЕ ЗНАЕТЕ, ЧТО ЭТО ТАКОЕ!
 # DON'T CHANGE IT IF YOU DON'T KNOW WHAT IT IS!
-hex-pattern: "&#[a-fA-F0-9]{6}"
+  hex-pattern: "&#[a-fA-F0-9]{6}"
 
-
-  #========================#
-  #   Основные настройки   #
-  #   Main settings        #
-  #========================#
-Main:
-  # Отключает сообщения о входе, выходе, смерти и тд.
-  # Disables messages about entry, exit, death, etc.
-  hidestream: true
-  # Отключает видимость игроков для друг друга.
-  # Disables the visibility of players to each other.
-  hide-players: true
-  # Включает сообщение приветствия, настройка в файле перевода.
-  # Enables the welcome message, setting in the translation file.
-  motd-message: false
-  # Приветственное сообщение виде title.
-  # Welcome message as title.
-  title-motd:
-    enabled: false
-    title-text: "Welcome to the &aServerName"
-    subtitle-text: "Have a nice game"
-    duration: 5
-  # Приветственное сообщение виде action bar.
-  # Welcome message as an action bar.
-  action-bar-motd:
-    enabled: false
-    text: "Best of luck"
 
   #===========================================#
   #   Настройки при подключении на сервер     #
@@ -59,23 +40,43 @@ Join:
   whitelist:
     enabled: false
     players:
-      - "staff"
       - "Baraban4ik"
+
   # Чёрный список игроков, которым не разрешён вход
   # Blacklist of players who are not allowed to enter
   blacklist:
     enabled: false
     players:
-      - "staff"
       - "Baraban4ik"
+
   # Включть свечение для игрока
   # Enable glow for player
   glow: false
+
   # Очистка инвентаря при выходе, чата при заходе.
   # Clearing inventory on exit, chat on entry.
   clear:
     chat: false
     inventory: true
+
+  # Включает сообщение приветствия, настройка в файле перевода.
+  # Enables the welcome message, setting in the translation file.
+  motd-message: false
+
+  # Приветственное сообщение виде title.
+  # Welcome message as title.
+  title-motd:
+    enabled: false
+    title-text: "Welcome to the &aServerName"
+    subtitle-text: ""
+    duration: 5
+
+  # Приветственное сообщение виде action bar.
+  # Welcome message as an action bar.
+  action-bar-motd:
+    enabled: false
+    text: "Welcome &a{player}"
+
 
   #=======================#
   #   Настройки игроков   #
@@ -85,9 +86,11 @@ Player:
   # Включить или выключить возможность писать в чат.
   # Enable or disable the ability to write in chat.
   enable-chat: false
+
   # Включить или выключить команды, use-commands - Возможность писать некоторые команды.
   # Enable or disable commands, use-commands - Ability to write some commands.
   enable-commands: false
+
   # Список команд, которые будут доступны, работает только с enable-commands: false.
   # The list of commands that will be available only works with enable-commands: false.
   use-commands:
@@ -98,45 +101,70 @@ Player:
     - 'recovery'
     - 'confirm'
     - 'changepassword'
+    -
   # Включает/Отключает возможность игрокам летать
   # Enables/Disables the ability of players to fly
   enable-fly: false
+
   # Включает/Отключает возможность получать урон
   # Enables/Disables the ability to take damage
   enable-damage: false
+
   # Включает/Отключает возможность ломать блоки
   # Enables/Disables the ability to break blocks
   enable-break-blocks: false
+
   # Включает/Отключает возможность ставить блоки
   # Enables/Disables the ability to place blocks
   enable-place-blocks: false
+
+  # Включает/Отключает возможность взаимодействовать с блоками
+  # Enables/Disables the ability to interact blocks
+  enable-interact-blocks: false
+
   # Включает/Отключает возможность голодать
   # Enables/Disables the ability to hunger
   enable-hunger: false
+
   # Включает/Отключает возможность двигаться
   # Enables/Disables the ability to move
   enable-movements: true
+
   # Установка хп для игрока
   # Setting the player's health
   health: 20
+
   # Установка скорости для игрока, максимальная: 10, минимальная: -10, дефолтная: 2
   # Setting the player's speed, max: 10, min: -10, default: 2
-  speed: 6
+  speed: 2
+
   # Установка режима игры
   # Setting the game mode
   gamemode: survival
+
   # Установка ехп
   # Setting exp
   level-exp: 100
+
   # Установка эффектов
   # Setting effects
   effects:
-#    - 'SPEED:3'
+  #  - 'SPEED:3'
+
   # Включить/Отключить телепорт на спавн при прижке в пустоту
   # Enable/Disable teleport to spawn when you come to the void
   jump-to-void:
     enabled: true
     height: 0.0
+
+  # Отключает сообщения о входе, выходе, смерти и тд.
+  # Disables messages about entry, exit, death, etc.
+  hidestream: true
+
+  # Отключает видимость игроков для друг друга.
+  # Disables the visibility of players to each other.
+  hide-players: true
+
 
   #=========================#
   #   Настройки придметов   #
@@ -146,9 +174,26 @@ Items:
   # Включает/Отключает возможность перемещать предметы
   # Enables/Disables the ability to move items
   move-items: true
+
   # Включает/Отключает возможность дропать предметы
   # Enables/Disables the ability to drop items
   drop-items: true
+
+  # Предмет при подключении к серверу. Доступные действия: {MSG} - отправка сообщения игроку,
+  # {CONSOLE} - выполнение команды от имени консоли, {CMD} - выполнение команды от имени игрока.
+  # Чтобы отключить, оставьте поле материал пустым.
+  # Item when connecting to the server. Available Actions: {MSG} - sending a message to the player,
+  # {CONSOLE} - execute command as console, {CMD} - execute command as player.
+  # To disable, leave the material field blank.
+  join-item:
+    material: COMPASS
+    name: "&7 "
+    lore:
+      - "   &aSelecting the server   "
+      - "&7 "
+    actions:
+      - "{CMD}select"
+
 
   #====================#
   #   Настройки мира   #
@@ -158,6 +203,7 @@ World:
   # Установка времени мира
   # Setting the World Time
   time-set: 1000
+
   # Правила для игрового мира
   # Rules for the game world
   rules:

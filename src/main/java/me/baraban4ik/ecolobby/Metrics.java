@@ -12,7 +12,7 @@
  *
  * Violations will result in a ban of your plugin and account from bStats.
  */
-package me.baraban4ik.ecolobby.utils;
+package me.baraban4ik.ecolobby;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
