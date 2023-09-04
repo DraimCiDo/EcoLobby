@@ -1,57 +1,68 @@
 name: EcoLobby
-version: '${project.version}'
+version: ${project.version}
 main: me.baraban4ik.ecolobby.EcoLobby
+api-version: 1.13
 author: Baraban4ik
-softdepend: [PlaceholderAPI]
-api-version: 1.19
+depend: [ProtocolLib]
+softdepend: [NBTAPI, PlaceholderAPI]
 
 commands:
   ecolobby:
+    usage: /<command> [reload, help, give]
+    aliases: [el, elobby, lobby]
+  setspawn:
     usage: /<command>
-    aliases: [el, ecol, elobby]
   spawn:
     usage: /<command>
-    aliases: [espawn, elspawn]
 
 permissions:
   ecolobby.*:
     default: op
     children:
       ecolobby.bypass.*: true
-  ecolobby.spawn:
-    default: true
-  ecolobby.setspawn:
-    default: op
+
   ecolobby.reload:
     default: op
+  ecolobby.help:
+    default: true
   ecolobby.give:
     default: op
-  ecolobby.help:
+  ecolobby.setspawn:
     default: op
+  ecolobby.spawn:
+    default: true
+
   ecolobby.bypass.*:
     default: op
     children:
-      ecolobby.bypass.move: true
+      ecolobby.bypass.movements: true
+
       ecolobby.bypass.chat: true
       ecolobby.bypass.commands: true
-      ecolobby.bypass.break: true
-      ecolobby.bypass.place: true
-      ecolobby.bypass.moveitems: true
-      ecolobby.bypass.dropitems: true
-      ecolobby.bypass.interact: true
-  ecolobby.bypass.move:
+
+      ecolobby.bypass.blocks.break: true
+      ecolobby.bypass.blocks.place: true
+
+      ecolobby.bypass.items.move: true
+      ecolobby.bypass.items.drop: true
+      ecolobby.bypass.items.pickup: true
+
+  ecolobby.bypass.movements:
     default: op
+
   ecolobby.bypass.chat:
     default: op
   ecolobby.bypass.commands:
     default: op
-  ecolobby.bypass.break:
+
+  ecolobby.bypass.blocks.break:
     default: op
-  ecolobby.bypass.place:
+  ecolobby.bypass.blocks.place:
     default: op
-  ecolobby.bypass.moveitems:
+
+  ecolobby.bypass.items.move:
     default: op
-  ecolobby.bypass.dropitems:
+  ecolobby.bypass.items.drop:
     default: op
-  ecolobby.bypass.interact:
+  ecolobby.bypass.items.pickup:
     default: op

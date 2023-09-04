@@ -1,214 +1,175 @@
-#-=-=-=-=-=-=-=-=-=-=EcoLobby-=-=-=-=-=-=-=-=-=#
-#-=                                          =-#
-#-=             Author: Baraban4ik           =-#
-#-=             Version: ${project.version}               =-#
-#-=                                          =-#
-#-=-=-=-=-=-=-=-=-=-=EcoLobby-=-=-=-=-=-=-=-=-=#
-
-# Доступные плейсхолдеры: {player} - Имя игрока, Новая строка - {NL} тоже самое что и \n, {prfx} - префикс, настраивается в файлах перевода
-# Поддержка HEX цветов(1.16+) - &#hex код. Пример: &#fffff
-# Available placeholders: {player} - Player name, New string - {NL} same as \n, {prfx} - prefix, configurable in translation files
-# HEX color support(1.16+) - &#hex code. Example: &#fffff.
-
-
-#================================#
-#   Основные настройки плагина   #
-#   Main settings of the plugin  #
-#================================#
-Main:
-  # НЕ ИЗМЕНЯЙТЕ ЭТО!
-  # DON'T CHANGE IT!
-  config-version: ${project.version}
-
-# Изменяет язык плагина, доступные языки: ru, en.
-# Changes the language of the plugin, available languages: ru, en.
-  lang: ru
-  check-update: true
-
-# НЕ ИЗМЕНЯЙТЕ ЭТО, ЕСЛИ ВЫ НЕ ЗНАЕТЕ, ЧТО ЭТО ТАКОЕ!
-# DON'T CHANGE IT IF YOU DON'T KNOW WHAT IT IS!
-  hex-pattern: "&#[a-fA-F0-9]{6}"
+#
+#   ____  ___  _____    __    _____  ____  ____  _  _    —————————————————————
+#  ( ___)/ __)(  _  )  (  )  (  _  )(  _ \(  _ \( \/ )  │ Author — Baraban4ik │
+#   )__)( (__  )(_)(    )(__  )(_)(  ) _ < ) _ < \  /   │   Version — 1.1.0   │
+#  (____)\___)(_____)  (____)(_____)(____/(____/ (__)    —————————————————————
+#
+#  PLUGIN PLACEHOLDERS:
+#
+#    %NL% - New string
+#    %prfx% - Prefix
+#    %player% - Player nickname
+#    %online% - Server online
+#
 
 
-  #===========================================#
-  #   Настройки при подключении на сервер     #
-  #   Settings when connecting to the server  #
-  #===========================================#
-Join:
-  # Белый список игроков, которым разрешён вход
-  # White list of players who are allowed to enter
+#   —————————————————————————————
+#  │   MAIN SETTINGS             │
+#   —————————————————————————————
+
+# DON'T CHANGE
+config_version: 1.1.0
+
+# Check for new versions of the plugin
+check_update: true
+
+# DON'T CHANGE IF YOU DON'T KNOW WHAT IT IS.
+hex_pattern: "#[a-fA-F0-9]{6}"
+
+
+#   —————————————————————————————
+#  │   JOIN SETTINGS             │
+#   —————————————————————————————
+
+join_settings:
+
+  # Teleportation to the spavn when connecting to the server
+  spawn_join: true
+
+  # Clear chat when connecting to the server
+  clear_chat: true
+  # Clear inventory when connecting to the server
+  clear_inventory: true
+
+  # Whitelist of players allowed to login
   whitelist:
     enabled: false
     players:
       - "Baraban4ik"
-
-  # Чёрный список игроков, которым не разрешён вход
-  # Blacklist of players who are not allowed to enter
+  # Blacklist of players not allowed to login
   blacklist:
     enabled: false
     players:
       - "Baraban4ik"
 
-  # Включть свечение для игрока
-  # Enable glow for player
-  glow: false
-
-  # Очистка инвентаря при выходе, чата при заходе.
-  # Clearing inventory on exit, chat on entry.
-  clear:
-    chat: false
-    inventory: true
-
-  # Включает сообщение приветствия, настройка в файле перевода.
-  # Enables the welcome message, setting in the translation file.
-  motd-message: false
-
-  # Приветственное сообщение виде title.
-  # Welcome message as title.
-  title-motd:
-    enabled: false
-    title-text: "Welcome to the &aServerName"
-    subtitle-text: ""
+  # Welcoming message
+  motd_message: true
+  # Welcome message as a title
+  title_motd:
+    enabled: true
+    title_text: "&fWelcome to the &a&lServer Name"
+    subtitle_text: ""
     duration: 5
+  # Welcome message as a action bar
+  action_bar_motd:
+    enabled: true
+    text: "&7Welcome &a%player%"
 
-  # Приветственное сообщение виде action bar.
-  # Welcome message as an action bar.
-  action-bar-motd:
-    enabled: false
-    text: "Welcome &a{player}"
+  #
+  # Items when connecting to the server
+  #
+  #  AVAILABLE ACTIONS:
+  #
+  #    [MSG] - Send message to player
+  #    [CMD] - Execute the command as player
+  #    [CONSOLE] - Execute the command as console
+  #
+  custom_join_items:
+    items:
+      selector:
+        name: "&a&lServer selector"
+        material: COMPASS
+        data: 0 # Optional, for 1.12 only
+        slot: 0
+        amount: 1
+        lore: []
+        actions:
+          - "[MSG]"
+          - "[MSG]&f   Connecting to the server..."
+          - "[MSG]"
 
 
-  #=======================#
-  #   Настройки игроков   #
-  #   Settings players    #
-  #=======================#
-Player:
-  # Включить или выключить возможность писать в чат.
-  # Enable or disable the ability to write in chat.
-  enable-chat: false
+#   —————————————————————————————
+#  │   ITEMS SETTINGS            │
+#   —————————————————————————————
 
-  # Включить или выключить команды, use-commands - Возможность писать некоторые команды.
-  # Enable or disable commands, use-commands - Ability to write some commands.
-  enable-commands: false
+items_settings:
+  # The ability to move items
+  move: false
+  # The ability to drop items
+  drop: false
+  # The ability to pickup items
+  pickup: false
 
-  # Список команд, которые будут доступны, работает только с enable-commands: false.
-  # The list of commands that will be available only works with enable-commands: false.
-  use-commands:
-    - 'login'
-    - 'register'
-    - 'l'
-    - 'reg'
-    - 'recovery'
-    - 'confirm'
-    - 'changepassword'
-    -
-  # Включает/Отключает возможность игрокам летать
-  # Enables/Disables the ability of players to fly
-  enable-fly: false
+#   —————————————————————————————
+#  │   TAB SETTINGS              │
+#   —————————————————————————————
 
-  # Включает/Отключает возможность получать урон
-  # Enables/Disables the ability to take damage
-  enable-damage: false
+tab_settings:
+  # Hide the players in the tablist
+  hide_player: true
 
-  # Включает/Отключает возможность ломать блоки
-  # Enables/Disables the ability to break blocks
-  enable-break-blocks: false
 
-  # Включает/Отключает возможность ставить блоки
-  # Enables/Disables the ability to place blocks
-  enable-place-blocks: false
+#   —————————————————————————————
+#  │   WORLD SETTINGS            │
+#   —————————————————————————————
 
-  # Включает/Отключает возможность взаимодействовать с блоками
-  # Enables/Disables the ability to interact blocks
-  enable-interact-blocks: false
-
-  # Включает/Отключает возможность голодать
-  # Enables/Disables the ability to hunger
-  enable-hunger: false
-
-  # Включает/Отключает возможность двигаться
-  # Enables/Disables the ability to move
-  enable-movements: true
-
-  # Установка хп для игрока
-  # Setting the player's health
-  health: 20
-
-  # Установка скорости для игрока, максимальная: 10, минимальная: -10, дефолтная: 2
-  # Setting the player's speed, max: 10, min: -10, default: 2
-  speed: 2
-
-  # Установка режима игры
-  # Setting the game mode
-  gamemode: survival
-
-  # Установка ехп
-  # Setting exp
-  level-exp: 100
-
-  # Установка эффектов
-  # Setting effects
-  effects:
-  #  - 'SPEED:3'
-
-  # Включить/Отключить телепорт на спавн при прижке в пустоту
-  # Enable/Disable teleport to spawn when you come to the void
-  jump-to-void:
+world_settings:
+  # Teleportation to a spavn when jumping into the void
+  jump_to_void:
     enabled: true
     height: 0.0
 
-  # Отключает сообщения о входе, выходе, смерти и тд.
-  # Disables messages about entry, exit, death, etc.
-  hidestream: true
 
-  # Отключает видимость игроков для друг друга.
-  # Disables the visibility of players to each other.
-  hide-players: true
+#   —————————————————————————————
+#  │   PLAYER SETTINGS           │
+#   —————————————————————————————
 
+player_settings:
+  abilities:
+    # The ability to write to chat
+    chat: false
+    # The ability to use commands
+    commands: false
+    # Commands you can use
+    use_commands:
+      - 'login'
+      - 'register'
+      - 'l'
+      - 'reg'
+      - 'recovery'
+      - 'confirm'
+      - 'changepassword'
 
-  #=========================#
-  #   Настройки придметов   #
-  #   Settings Items        #
-  #=========================#
-Items:
-  # Включает/Отключает возможность перемещать предметы
-  # Enables/Disables the ability to move items
-  move-items: true
+    # The ability to take damage
+    damage: false
+    # The ability to hunger
+    hunger: false
 
-  # Включает/Отключает возможность дропать предметы
-  # Enables/Disables the ability to drop items
-  drop-items: true
+    # The ability to move
+    movements: true
+    # The ability to fly
+    fly: false
 
-  # Предмет при подключении к серверу. Доступные действия: {MSG} - отправка сообщения игроку,
-  # {CONSOLE} - выполнение команды от имени консоли, {CMD} - выполнение команды от имени игрока.
-  # Чтобы отключить, оставьте поле материал пустым.
-  # Item when connecting to the server. Available Actions: {MSG} - sending a message to the player,
-  # {CONSOLE} - execute command as console, {CMD} - execute command as player.
-  # To disable, leave the material field blank.
-  join-item:
-    material: COMPASS
-    name: "&7 "
-    lore:
-      - "   &aSelecting the server   "
-      - "&7 "
-    actions:
-      - "{CMD}select"
+    blocks:
+      # The ability to break blocks
+      break: false
+      # The ability to place blocks
+      place: false
+      
+      # Send deny messages
+      use_deny_messages: true
+      # Show the effects
+      use_particle_effect: true
 
+  stats:
+    health: 20
+    gamemode: survival
+    level_exp: 777
+    # USAGE: 'EFFECT:LEVEL'
+    effects: []
 
-  #====================#
-  #   Настройки мира   #
-  #   Settings world   #
-  #====================#
-World:
-  # Установка времени мира
-  # Setting the World Time
-  time-set: 1000
-
-  # Правила для игрового мира
-  # Rules for the game world
-  rules:
-    day-light-cycle: false
-    weather-cycle: false
-    mob-spawning: false
-    fire-spread: false
-
+  # Hide message about join, leave, etc.
+  hide_stream: true
+  # Hide the players from each other
+  hide_players: true

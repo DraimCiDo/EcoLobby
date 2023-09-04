@@ -1,14 +1,16 @@
 package me.baraban4ik.ecolobby.listeners;
 
 import me.baraban4ik.ecolobby.EcoLobby;
-import me.baraban4ik.ecolobby.configurations.Configurations;
+import me.baraban4ik.ecolobby.utils.Chat;
 import org.bukkit.Bukkit;
+import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -20,144 +22,104 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
-import static me.baraban4ik.ecolobby.utils.Chat.sendMessageSection;
+import static me.baraban4ik.ecolobby.EcoLobby.config;
 
 public class PlayerListener implements Listener {
-    private final Configurations config;
-    private final EcoLobby plugin;
 
-    public PlayerListener(Configurations configurations, EcoLobby plugin) {
-        config = configurations;
-        this.plugin = plugin;
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
 
-    }
-
-    // Chat and Commands:
-    @EventHandler
-    public void onChat(AsyncPlayerChatEvent e) {
-        Player player = e.getPlayer();
-
-        if (!player.hasPermission("ecolobby.bypass.chat") && !config.get("config.yml").getBoolean("Player.enable-chat")) {
-
-            sendMessageSection(player, "disable-chat");
-            e.setCancelled(true);
+        if (!player.hasPermission("ecolobby.bypass.chat") && !config.getBoolean("player_settings.abilities.chat")) {
+            Chat.sendMessage("deny_chat", player);
+            event.setCancelled(true);
         }
     }
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onCommands(PlayerCommandPreprocessEvent event) {
+        Player player = event.getPlayer();
 
-    @EventHandler
-    public void onCommands(PlayerCommandPreprocessEvent e) {
-        Player player = e.getPlayer();
+        if (!player.hasPermission("ecolobby.bypass.commands") && !config.getBoolean("player_settings.abilities.commands")) {
+            String[] command = event.getMessage().replace("/", "").split(" ");
 
-        if (!config.get("config.yml").getBoolean("Player.enable-commands") && !player.hasPermission("ecolobby.bypass.commands")) {
-            String[] message = e.getMessage().replace("/", "").split(" ");
-
-            if (!config.get("config.yml").getStringList("Player.use-commands").contains(message[0])) {
-
-                sendMessageSection(player, "disable-commands");
-                e.setCancelled(true);
+            if (!config.getStringList("player_settings.abilities.use_commands").contains(command[0])) {
+                Chat.sendMessage("deny_commands", player);
+                event.setCancelled(true);
             }
         }
     }
 
-    // Fly:
-    @EventHandler
-    public void fly(PlayerJoinEvent e) {
-        if (config.get("config.yml").getBoolean("Player.enable-fly")) {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                p.setAllowFlight(true);
-            }
-        }
-        else {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                p.setAllowFlight(false);
-            }
-        }
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player && !config.getBoolean("player_settings.abilities.damage"))
+            event.setCancelled(true);
+    }
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onHunger(FoodLevelChangeEvent event) {
+        if (!config.getBoolean("player_settings.abilities.hunger") && event.getEntity() instanceof Player)
+            event.setCancelled(true);
     }
 
-    // Damage:
-    @EventHandler
-    public void onDamage(EntityDamageEvent e) {
-        if (e.getEntity() instanceof Player && !config.get("config.yml").getBoolean("Player.enable-damage")) {
-            e.setCancelled(true);
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onMovements(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+
+        if (!player.hasPermission("ecolobby.bypass.movements") && !config.getBoolean("player_settings.abilities.movements")) {
+
+            Location from = event.getFrom().clone();
+            Location to = event.getTo();
+
+            from.setYaw(to.getYaw());
+            from.setPitch(to.getPitch());
+
+            if (!from.equals(to)) event.setCancelled(true);
         }
     }
-
-    // Break, Interact and Place blocks:
-    @EventHandler
-    public void onBreakBlock(BlockBreakEvent e) {
-        Player player = e.getPlayer();
-
-        if (!player.hasPermission("ecolobby.bypass.break")) {
-            if (!config.get("config.yml").getBoolean("Player.enable-break-blocks")) {
-                e.setCancelled(true);
-            }
-        }
-    }
-    @EventHandler
-    public void onPlaceBlock(BlockPlaceEvent e) {
-        Player player = e.getPlayer();
-
-        if (!player.hasPermission("ecolobby.bypass.place")) {
-            if (!config.get("config.yml").getBoolean("Player.enable-place-blocks")) {
-                e.setCancelled(true);
-            }
-        }
-    }
-    @EventHandler
-    public void onInteractBlock(PlayerInteractEvent e) {
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (!e.getPlayer().hasPermission("ecolobby.bypass.interact")) {
-
-                if (!config.get("config.yml").getBoolean("Player.enable-interact-blocks")) {
-                    e.setCancelled(true);
-                }
-            }
-        }
-    }
-
-    // Hunger:
-    @EventHandler
-    public void onHunger(FoodLevelChangeEvent e) {
-        if (!config.get("config.yml").getBoolean("Player.enable-hunger")) {
-            e.setCancelled(true);
-        }
-    }
-
-    // Movements:
-    @EventHandler
-    public void onMovements(PlayerMoveEvent e) {
-        Player player = e.getPlayer();
-
-        if (!config.get("config.yml").getBoolean("Player.enable-movements")) {
-            if (!player.hasPermission("ecolobby.bypass.move")) {
-
-                Location from = e.getFrom().clone();
-                Location to = e.getTo();
-
-                assert to != null;
-                from.setYaw(to.getYaw());
-                from.setPitch(to.getPitch());
-
-                if (!from.equals(to)) e.setCancelled(true);
-            }
-        }
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void fly(PlayerJoinEvent event) {
+        event.getPlayer().setAllowFlight(config.getBoolean("player_settings.abilities.fly"));
     }
 
 
-    // Statistics:
-    @EventHandler
-    public void statistics(PlayerJoinEvent e) {
-        Player player = e.getPlayer();
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockBreak(BlockBreakEvent event) {
+        Player player = event.getPlayer();
 
-        player.setGameMode(GameMode.valueOf((config.get("config.yml").getString("Player.gamemode")).toUpperCase()));
+        if (!player.hasPermission("ecolobby.bypass.blocks.break") && !config.getBoolean("player_settings.abilities.blocks.break")) {
 
-        player.setLevel(config.get("config.yml").getInt("Player.level-exp"));
-        player.setHealth(config.get("config.yml").getDouble("Player.health"));
+            if (config.getBoolean("player_settings.abilities.blocks.use_particle_effect"))
+                player.playEffect(event.getBlock().getLocation().add(0.5, 1, 0.5), Effect.SMOKE, BlockFace.UP);
+            if (config.getBoolean("player_settings.abilities.blocks.use_deny_messages"))
+                Chat.sendMessage("deny_break_blocks", player);
 
-        int newSpeed = Math.min(Math.max(config.get("config.yml").getInt("Player.speed", 2), -10), 10);
-        player.setWalkSpeed(newSpeed * 0.1f);
+            event.setCancelled(true);
+        }
+    }
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockPlace(BlockPlaceEvent event) {
+        Player player = event.getPlayer();
 
-        List<String> effects = config.get("config.yml").getStringList("Player.effects");
+        if (!player.hasPermission("ecolobby.bypass.blocks.place") && !config.getBoolean("player_settings.abilities.blocks.place")) {
+
+            if (config.getBoolean("player_settings.abilities.blocks.use_particle_effect"))
+                player.playEffect(event.getBlockPlaced().getLocation().add(0.5, 1, 0.5), Effect.SMOKE, BlockFace.UP);
+            if (config.getBoolean("player_settings.abilities.blocks.use_deny_messages"))
+                Chat.sendMessage("deny_place_blocks", player);
+
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void statistics(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+
+        player.setGameMode(GameMode.valueOf((config.getString("player_settings.stats.gamemode")).toUpperCase()));
+
+        player.setLevel(config.getInt("player_settings.stats.level_exp"));
+        player.setHealth(config.getDouble("player_settings.stats.health"));
+
+        List<String> effects = config.getStringList("player_settings.stats.effects");
         effects.forEach((x) -> {
 
             PotionEffectType types = PotionEffectType.getByName(x.split(":")[0].toUpperCase());
@@ -168,49 +130,41 @@ public class PlayerListener implements Listener {
         });
     }
 
-    // Hidestream:
-    @EventHandler
-    public void hidestreamJoin(PlayerJoinEvent e) {
-        if (config.get("config.yml").getBoolean("Player.hidestream")) {
-            e.setJoinMessage(null);
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void hideJoinMessage(PlayerJoinEvent event) {
+        if (config.getBoolean("player_settings.hide_stream")) {
+            event.setJoinMessage(null);
+        }
+    }
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void hideQuitMessage(PlayerQuitEvent event) {
+        if (config.getBoolean("player_settings.hide_stream")) {
+            event.setQuitMessage(null);
+        }
+    }
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void hideDeathMessage(PlayerDeathEvent event) {
+        if (config.getBoolean("player_settings.hide_stream")) {
+            event.setDeathMessage(null);
+        }
+    }
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void hideKickMessage(PlayerKickEvent event) {
+        if (config.getBoolean("player_settings.hide_stream")) {
+            event.setLeaveMessage("");
         }
     }
 
-    @EventHandler
-    public void hidestreamQuit(PlayerQuitEvent e) {
-        if (config.get("config.yml").getBoolean("Player.hidestream")) {
-            e.setQuitMessage(null);
-        }
-    }
+    @EventHandler(priority = EventPriority.HIGH)
+    public void hidePlayers(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
 
-    @EventHandler
-    public void hidestreamDeath(PlayerDeathEvent e) {
-        if (config.get("config.yml").getBoolean("Player.hidestream")) {
-            e.setDeathMessage(null);
-        }
-    }
-
-    @EventHandler
-    public void hidestreamKick(PlayerKickEvent e) {
-        if (config.get("config.yml").getBoolean("Player.hidestream")) {
-            e.setLeaveMessage("");
-        }
-    }
-
-    // Hide players:
-    @EventHandler
-    public void hidePlayers(PlayerJoinEvent e) {
-        Player player = e.getPlayer();
-
-        if (config.get("config.yml").getBoolean("Player.hide-players")) {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                player.hidePlayer(plugin, p);
-            }
+        if (config.getBoolean("player_settings.hide_players")) {
+            for (Player other : Bukkit.getOnlinePlayers())
+                other.hidePlayer(EcoLobby.instance, player);
         } else {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                player.showPlayer(plugin, p);
-            }
+            for (Player other : Bukkit.getOnlinePlayers())
+                other.showPlayer(EcoLobby.instance, player);
         }
-
     }
 }

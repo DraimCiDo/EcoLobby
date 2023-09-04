@@ -1,4 +1,4 @@
-package me.baraban4ik.ecolobby.commands;
+package me.baraban4ik.ecolobby.command.base;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 
-public class LobbyTabCompleter implements TabCompleter {
+public class BaseTabCompleter implements TabCompleter {
     public List<String> complete(CommandSender sender, String[] args) {
         return null;
     }

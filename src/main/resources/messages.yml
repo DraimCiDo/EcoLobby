@@ -1,0 +1,56 @@
+#
+#   ____  ___  _____    __    _____  ____  ____  _  _    —————————————————————
+#  ( ___)/ __)(  _  )  (  )  (  _  )(  _ \(  _ \( \/ )  │ Author — Baraban4ik │
+#   )__)( (__  )(_)(    )(__  )(_)(  ) _ < ) _ < \  /   │   Version — 1.1.0   │
+#  (____)\___)(_____)  (____)(_____)(____/(____/ (__)    —————————————————————
+#
+#  PLUGIN PLACEHOLDERS:
+#
+#    %NL% - New string
+#    %prfx% - Prefix
+#    %player% - Player nickname
+#    %online% - Server online
+#
+
+
+prefix: "%NL%  &l&fᴇ&a&lʟᴏʙʙʏ  &7|  &f"
+
+help:
+  - ""
+  - "   &f&lᴇᴄᴏ&a&lʟᴏʙʙʏ &7| &fCommand Helper"
+  - ""
+  - "    &f/el reload &7— &aReloading the plugin configuration"
+  - "    &f/el give [name] &7— &aGive join item"
+  - ""
+  - "    &f/setspawn &7— &aSet spawn"
+  - "    &f/spawn &7— &aTeleport to spawn"
+  - ""
+motd:
+  - ""
+  - "   &7[ &a&lServer Name &7] %online%/100"
+  - ""
+  - "   &fWelcome &a&l%player% &fto the server &a&lServer Name"
+  - ""
+  - "   &a/reg &7— &fRegister on the server"
+  - "   &a/login &7— &fLogin on the server"
+  - ""
+  - "   &fI hope you like it here!"
+  - ""
+
+give_usage: "%prfx%Usage: /el give [name] %NL% "
+
+whitelist_kick_message: "&f&lᴇᴄᴏ&a&lʟᴏʙʙʏ%NL%%NL%&fYou are not on the server whitelist!"
+blacklist_kick_message: "&f&lᴇᴄᴏ&a&lʟᴏʙʙʏ%NL%%NL%&fYou are on the server blacklist!"
+no_permission: "%prfx%You don't have permission! %NL% "
+
+deny_chat: "%prfx%Sorry, but you can't use chat! %NL% "
+deny_commands: "%prfx%Sorry, but you can't use commands! %NL% "
+
+deny_break_blocks: "%prfx%Sorry, but you can't break blocks! %NL% "
+deny_place_blocks: "%prfx%Sorry, but you can't place blocks! %NL% "
+
+jump_to_void: "%prfx%You fell into the void, teleporting you to the spawn! %NL% "
+
+successfully_setspawn: "%prfx%Spawn successfully installed. %NL% "
+teleported_spawn: "%prfx%Teleportation a spawn! %NL% "
+null_spawn: "%prfx%Spawn does not exist, teleportation is impossible! %NL% "

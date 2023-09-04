@@ -1,4 +1,4 @@
-package me.baraban4ik.ecolobby.configurations;
+package me.baraban4ik.ecolobby;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class Configurations
 
         this.configurationsNames = Lists.newArrayList(configurationsNames);
 
-        this.loadConfigurations();
+        this.load();
     }
 
 
@@ -39,7 +39,7 @@ public class Configurations
         return file;
     }
 
-    public void loadConfigurations()
+    public void load()
     {
         for (String configurationName : this.configurationsNames)
         {
@@ -56,11 +56,11 @@ public class Configurations
         }
     }
 
-    public void reloadConfigurations()
+    public void reload()
     {
         this.configurations.clear();
 
-        this.loadConfigurations();
+        this.load();
     }
 
     private Optional<Map.Entry<FileConfiguration, File>> getEntry(String configurationName)

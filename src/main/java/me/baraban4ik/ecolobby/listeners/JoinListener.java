@@ -1,119 +1,112 @@
 package me.baraban4ik.ecolobby.listeners;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketEvent;
 import me.baraban4ik.ecolobby.EcoLobby;
-import me.baraban4ik.ecolobby.configurations.Configurations;
+import me.baraban4ik.ecolobby.managers.ItemManager;
+import me.baraban4ik.ecolobby.utils.Chat;
+import me.baraban4ik.ecolobby.utils.Spawn;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-import static me.baraban4ik.ecolobby.utils.Chat.*;
-import static me.baraban4ik.ecolobby.utils.Chat.sendActionBar;
+import static me.baraban4ik.ecolobby.EcoLobby.config;
+import static me.baraban4ik.ecolobby.EcoLobby.messages;
 
 public class JoinListener implements Listener {
-    private final Configurations config;
-    private final EcoLobby plugin;
 
-    public JoinListener(Configurations configurations, EcoLobby plugin) {
-        config = configurations;
-        this.plugin = plugin;
-    }
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPreLogin(AsyncPlayerPreLoginEvent event) {
+        // WhiteList
+        if (config.getBoolean("join_settings.whitelist.enabled")) {
+            if (!config.getStringList("join_settings.whitelist.players").contains(event.getName())) {
 
-    // Whitelist and Blacklist
-    @EventHandler
-    public void whitelist(AsyncPlayerPreLoginEvent e) {
-        if (config.get("config.yml").getBoolean("Join.whitelist.enabled")) {
-            if (!config.get("config.yml").getStringList("Join.whitelist.players").contains(e.getName())) {
-
-                e.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST);
-                e.setKickMessage(getLang().getString("whitelist-kick"));
-
+                event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST);
+                event.setKickMessage(Chat.format(messages.getString("whitelist_kick_message"), Bukkit.getPlayer(event.getName())));
             }
         }
-    }
-    @EventHandler
-    public void blacklist(AsyncPlayerPreLoginEvent e) {
-        if (config.get("config.yml").getBoolean("Join.blacklist.enabled")) {
-            if (config.get("config.yml").getStringList("Join.blacklist.players").contains(e.getName())) {
+        // BlackList
+        if (config.getBoolean("join_settings.blacklist.enabled")) {
+            if (config.getStringList("join_settings.blacklist.players").contains(event.getName())) {
 
-                e.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
-                e.setKickMessage(getLang().getString("blacklist-kick"));
-
+                event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
+                event.setKickMessage(Chat.format(messages.getString("blacklist_kick_message"), Bukkit.getPlayer(event.getName())));
             }
         }
     }
 
-    // Glow:
-    @EventHandler
-    public void setGlow(PlayerJoinEvent e) {
-        if (config.get("config.yml").getBoolean("Join.glow")) {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                p.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 0, true, false));
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+
+        // Hide player in TabList
+        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(EcoLobby.instance, PacketType.Play.Server.PLAYER_INFO) {
+            public void onPacketSending(PacketEvent event) {
+                event.setCancelled(config.getBoolean("tab_settings.hide_player"));
             }
+        });
+
+        // Clear chat
+        if (config.getBoolean("join_settings.clear_chat")) {
+            for (int i = 0; i < 120; ++i) player.sendMessage("");
         }
-        else {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                p.removePotionEffect(PotionEffectType.GLOWING);
-            }
-        }
-    }
-
-    // Clear:
-    @EventHandler
-    public void clearChat(PlayerJoinEvent e) {
-        Player player = e.getPlayer();
-
-        if (config.get("config.yml").getBoolean("Join.clear.chat")) {
-            for (int i = 0; i < 120; ++i) {
-                player.sendMessage("");
-            }
-        }
-        
-    }
-
-    @EventHandler
-    public void clearInventory(PlayerQuitEvent e) {
-        Player player = e.getPlayer();
-        if (config.get("config.yml").getBoolean("Join.clear.inventory")) {
-
+        // Clear inventory
+        if (config.getBoolean("join_settings.clear_inventory")) {
             player.getInventory().clear();
-
         }
-    }
 
-    // Motd:
-    @EventHandler
-    public void motd(PlayerJoinEvent e) {
-        Player player = e.getPlayer();
+        // Give join items
+        ConfigurationSection items = config.getConfigurationSection("join_settings.custom_join_items.items");
 
-        if (config.get("config.yml").getBoolean("Join.motd-message")) {
+		if (items != null) {
+			for (String section : items.getKeys(false)) {
+				ItemStack item = ItemManager.get(player, section);
 
-            List<String> motd = getLang().getStringList("motd");
+				if (item != null) {
+					player.getInventory().setItem(items.getInt(section + ".slot"), item);
+				}
+			}
+		}
 
-            if (motd.isEmpty()) {
-                return;
-            }
-
-            motd.forEach((x) -> sendMessage(player, x));
+        // Join spawn
+        if (config.getBoolean("join_settings.spawn_join")) {
+            Location spawn = Spawn.get();
+            if (spawn != null) player.teleport(spawn);
         }
-        if (config.get("config.yml").getBoolean("Join.title-motd.enabled")) {
 
-            String text = config.get("config.yml").getString("Join.title-motd.title-text");
-            String subText = config.get("config.yml").getString("Join.title-motd.subtitle-text");
+        // MOTD Message
+        if (config.getBoolean("join_settings.motd_message")) {
 
-            int duration = config.get("config.yml").getInt("Join.title-motd.duration");
+            List<String> motd = messages.getStringList("motd");
 
-            sendTitle(player, text, subText, duration);
+            if (motd.isEmpty()) return;
+
+            Chat.sendMessage(motd, player);
         }
-        if (config.get("config.yml").getBoolean("Join.action-bar-motd.enabled")) {
-            sendActionBar(player, config.get("config.yml").getString("Join.action-bar-motd.text"));
+        // Title MOTD message
+        if (config.getBoolean("join_settings.title_motd.enabled")) {
+
+            String text = config.getString("join_settings.title_motd.title_text");
+            String subText = config.getString("join_settings.title_motd.subtitle_text");
+
+            int duration = config.getInt("join_settings.title_motd.duration");
+
+            Chat.sendTitle(player, text, subText, duration);
+        }
+        // Action bar MOTD message
+        if (config.getBoolean("join_settings.action_bar_motd.enabled")) {
+            Chat.sendActionBar(player, config.getString("join_settings.action_bar_motd.text"));
         }
     }
 }
