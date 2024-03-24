@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import static me.baraban4ik.ecolobby.EcoLobby.spawn;
 
 public class Spawn {
-    public static void set(@NotNull Player player) {
+    public static void set(@NotNull Player player, String type) {
         Location location = player.getLocation();
 
         double x = location.getX();
@@ -21,28 +21,28 @@ public class Spawn {
         float pitch = location.getPitch();
         float yaw = location.getYaw();
 
-        spawn.set("x", x);
-        spawn.set("y", y);
-        spawn.set("z", z);
+        spawn.set(type + ".x", x);
+        spawn.set(type + ".y", y);
+        spawn.set(type + ".z", z);
 
-        spawn.set("pitch", pitch);
-        spawn.set("yaw", yaw);
-        spawn.set("world", player.getWorld().getName());
+        spawn.set(type + ".pitch", pitch);
+        spawn.set(type + ".yaw", yaw);
+        spawn.set(type + ".world", player.getWorld().getName());
 
-        EcoLobby.instance.getConfigurations().save(spawn, "spawn.yml");
+        EcoLobby.instance.getFiles().save(spawn, "spawn.yml");
     }
 
-    public static Location get() {
-        if (spawn.get("x") == null && spawn.get("y") == null) return null;
+    public static Location get(String type) {
+        if (spawn.get(type + ".x") == null && spawn.get(type + ".y") == null) return null;
 
-        double x = spawn.getDouble("x");
-        double y = spawn.getDouble("y");
-        double z = spawn.getDouble("z");
+        double x = spawn.getDouble(type + ".x");
+        double y = spawn.getDouble(type + ".y");
+        double z = spawn.getDouble(type + ".z");
 
-        double pitch = spawn.getDouble("pitch");
-        double yaw = spawn.getDouble("yaw");
+        double pitch = spawn.getDouble(type + ".pitch");
+        double yaw = spawn.getDouble(type + ".yaw");
 
-        World world = Bukkit.getWorld(spawn.getString("world"));
+        World world = Bukkit.getWorld(spawn.getString(type + ".world", "world"));
 
         return new Location(world, x, y, z, (float)yaw, (float)pitch);
     }

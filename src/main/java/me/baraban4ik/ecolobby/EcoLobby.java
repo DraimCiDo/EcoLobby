@@ -1,76 +1,106 @@
 package me.baraban4ik.ecolobby;
 
-import de.tr7zw.nbtapi.NBT;
-import me.baraban4ik.ecolobby.bstats.Metrics;
-import me.baraban4ik.ecolobby.command.LobbyCommand;
-import me.baraban4ik.ecolobby.command.SetSpawnCommand;
-import me.baraban4ik.ecolobby.command.SpawnCommand;
-import me.baraban4ik.ecolobby.command.base.BaseTabCompleter;
+import me.baraban4ik.ecolobby.commands.LobbyCommand;
+import me.baraban4ik.ecolobby.commands.SetSpawnCommand;
+import me.baraban4ik.ecolobby.commands.SpawnCommand;
+import me.baraban4ik.ecolobby.commands.base.BaseTabCompleter;
 import me.baraban4ik.ecolobby.listeners.*;
-import me.baraban4ik.ecolobby.utils.Chat;
+import me.baraban4ik.ecolobby.utils.Files;
 import me.baraban4ik.ecolobby.utils.Update;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.Objects;
-import java.util.logging.Logger;
+
+import static me.baraban4ik.ecolobby.utils.Chat.sendMessage;
 
 public final class EcoLobby extends JavaPlugin {
 
-    Configurations configurations = new Configurations(this, "config.yml", "messages.yml", "spawn.yml");
+    Files files = new Files(this, "config.yml",
+            "language/messages.yml",
+            "language/messages_ru.yml",
+            "spawn.yml",
+            "items.yml"
+    );
 
-    public Configurations getConfigurations() {
-        return configurations;
+    public Files getFiles() {
+        return files;
     }
 
     public static EcoLobby instance;
 
     public static FileConfiguration config;
     public static FileConfiguration messages;
+    public static FileConfiguration items;
     public static FileConfiguration spawn;
 
-    Logger logger = this.getLogger();
-
+    public static boolean placeholderAPI = false;
+    public static boolean noteBlockAPI = false;
+    public static boolean updateAvailable = false;
+    public static boolean legacyItems = false;
 
     @Override
     public void onLoad() {
         instance = this;
 
-        this.configurations.load();
+        this.files.load();
         this.loadConfigurations();
     }
 
     @Override
     public void onEnable() {
-        logger.info("NBTAPI hook: " + this.getServer().getPluginManager().isPluginEnabled("NBTAPI"));
-        logger.info("PlaceholderAPI hook: " + this.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI"));
 
-        Chat.sendPluginMessage(MESSAGES.ENABLE_MESSAGE, Bukkit.getConsoleSender());
+        placeholderAPI = this.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI");
+        noteBlockAPI = this.getServer().getPluginManager().isPluginEnabled("NoteBlockAPI");
 
         this.registerCommands();
         this.registerListeners();
 
-        new Metrics(this, 14978);
+        if (config.getBoolean("check_updates")) this.checkUpdate();
+        else updateAvailable = false;
 
-        if (config.getBoolean("check_update")) this.update();
+        legacyItems = getServerVersion() < 1.14f;
+        Metrics metrics = new Metrics(this, 14978);
+
+        sendMessage(MESSAGES.ENABLE_MESSAGE, Bukkit.getConsoleSender());
     }
+
     @Override
     public void onDisable() {
-        this.configurations = null;
+        this.files = null;
     }
 
-    public void reload() {
-        this.configurations.reload();
-        this.loadConfigurations();
+    private void registerCommands() {
+        this.getServer().getPluginCommand("ecolobby").setExecutor(new LobbyCommand());
+        this.getServer().getPluginCommand("setspawn").setExecutor(new SetSpawnCommand());
+        this.getServer().getPluginCommand("spawn").setExecutor(new SpawnCommand());
+    }
+    private void registerListeners() {
+        this.getServer().getPluginManager().registerEvents(new HiderListener(), this);
+        this.getServer().getPluginManager().registerEvents(new ItemsListener(), this);
+        this.getServer().getPluginManager().registerEvents(new JoinListener(), this);
+        this.getServer().getPluginManager().registerEvents(new LeaveListeners(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        this.getServer().getPluginManager().registerEvents(new PreJoinListener(), this);
+        this.getServer().getPluginManager().registerEvents(new WorldListener(), this);
     }
 
-    public Float getVersion() {
+
+
+    private void checkUpdate() {
+        new Update().getVersion(version ->
+        {
+            if (!this.getDescription().getVersion().equals(version)) {
+				updateAvailable = true;
+                sendMessage(MESSAGES.NEW_VERSION, Bukkit.getConsoleSender());
+            }
+        });
+    }
+
+    public Float getServerVersion() {
         String version = Bukkit.getVersion();
         String pattern = "[^0-9\\.\\:]";
         String versionMinecraft = version.replaceAll(pattern, "");
@@ -78,43 +108,30 @@ public final class EcoLobby extends JavaPlugin {
         return Float.parseFloat(versionMinecraft.substring(versionMinecraft.indexOf(":") + 1, versionMinecraft.lastIndexOf(".")));
     }
 
-
-    private void update() {
-        new Update().getVersion(version ->
-        {
-            if (!this.getDescription().getVersion().equals(version)) {
-                Chat.sendPluginMessage(MESSAGES.NEW_VERSION, Bukkit.getConsoleSender());
-            }
-        });
+    public void reload() {
+        this.files.reload();
+        this.loadConfigurations();
     }
 
+    private void loadLanguage() {
+        messages = this.files.get("language/messages.yml");
 
-    private void registerCommands() {
-        this.getServer().getPluginCommand("ecolobby").setExecutor(new LobbyCommand());
-        this.getServer().getPluginCommand("ecolobby").setTabCompleter(new BaseTabCompleter());
-
-        this.getServer().getPluginCommand("setspawn").setExecutor(new SetSpawnCommand());
-        this.getServer().getPluginCommand("spawn").setExecutor(new SpawnCommand());
+        if (config.getString("language").equalsIgnoreCase("ru"))
+            messages = this.files.get("language/messages_ru.yml");
     }
-
-    private void registerListeners() {
-        this.getServer().getPluginManager().registerEvents(new JoinListener(), this);
-        this.getServer().getPluginManager().registerEvents(new ItemsListener(), this);
-        this.getServer().getPluginManager().registerEvents(new WorldListener(), this);
-        this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-    }
-
     private void loadConfigurations() {
-        config = this.configurations.get("config.yml");
-        messages = this.configurations.get("messages.yml");
-        spawn = this.configurations.get("spawn.yml");
+        config = this.files.get("config.yml");
+        spawn = this.files.get("spawn.yml");
+        items = this.files.get("items.yml");
+
+        this.loadLanguage();
 
         if (!Objects.equals(config.get("config_version"), this.getDescription().getVersion())) {
 
             File file = new File(this.getDataFolder(), "config.yml");
             file.renameTo(new File(this.getDataFolder(), "config.yml-old"));
 
-            this.configurations.reload();
+            this.files.reload();
         }
     }
 }

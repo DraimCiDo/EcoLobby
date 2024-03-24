@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.baraban4ik</groupId>
-    <artifactId>EcoLobby</artifactId>
-    <version>1.1.0</version>
+    <artifactId>ecolobby</artifactId>
+    <version>1.1.1</version>
     <packaging>jar</packaging>
 
     <name>EcoLobby</name>
@@ -38,7 +38,16 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.bstats</pattern>
+                                    <shadedPattern>me.baraban4ik.lib.org.bstats</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>de.tr7zw</pattern>
+                                    <shadedPattern>me.baraban4ik.lib.de.tr7zw</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
@@ -53,28 +62,27 @@
     </build>
 
     <repositories>
+        <!-- Spigot API -->
         <repository>
-            <id>spigotmc-repo</id>
+            <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-        <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
 
+        <!-- PlaceholderAPI -->
         <repository>
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
 
+        <!-- NoteBlockAPI -->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <!-- ItemNBT-API -->
         <repository>
             <id>codemc-repo</id>
             <url>https://repo.codemc.io/repository/maven-public/</url>
-        </repository>
-
-        <repository>
-            <id>dmulloy2-repo</id>
-            <url>https://repo.dmulloy2.net/repository/public/</url>
         </repository>
     </repositories>
 
@@ -83,10 +91,9 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.20.1-R0.1-SNAPSHOT</version>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
         <!-- PlaceholderAPI -->
         <dependency>
             <groupId>me.clip</groupId>
@@ -95,20 +102,24 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- NBTAPI -->
+        <!-- NoteBlockAPI -->
+        <dependency>
+            <groupId>com.github.koca2000</groupId>
+            <artifactId>NoteBlockAPI</artifactId>
+            <version>1.6.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- ItemNBT-API -->
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api-plugin</artifactId>
-            <version>2.11.3</version>
-            <scope>provided</scope>
+            <version>2.12.2</version>
         </dependency>
-
-        <!-- ProtocolLib -->
+        <!-- bStats -->
         <dependency>
-            <groupId>com.comphenix.protocol</groupId>
-            <artifactId>ProtocolLib</artifactId>
-            <version>4.8.0</version>
-            <scope>provided</scope>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>3.0.2</version>
         </dependency>
     </dependencies>
 </project>

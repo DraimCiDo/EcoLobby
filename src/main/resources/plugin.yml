@@ -1,17 +1,16 @@
 name: EcoLobby
-version: ${project.version}
-main: me.baraban4ik.ecolobby.EcoLobby
-api-version: 1.13
 author: Baraban4ik
-depend: [ProtocolLib]
-softdepend: [NBTAPI, PlaceholderAPI]
+version: '${project.version}'
+api-version: 1.13
+main: me.baraban4ik.ecolobby.EcoLobby
+softdepend: [PlaceholderAPI, NoteBlockAPI]
 
 commands:
   ecolobby:
-    usage: /<command> [reload, help, give]
+    usage: /<command> <reload, help, give, setspawn, spawn>
     aliases: [el, elobby, lobby]
   setspawn:
-    usage: /<command>
+    usage: /<command> (main / first)
   spawn:
     usage: /<command>
 
@@ -66,3 +65,5 @@ permissions:
     default: op
   ecolobby.bypass.items.pickup:
     default: op
+
+

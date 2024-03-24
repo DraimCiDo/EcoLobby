@@ -1,4 +1,4 @@
-package me.baraban4ik.ecolobby;
+package me.baraban4ik.ecolobby.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
-public class Configurations
+public class Files
 {
     private final Map<String, Map.Entry<FileConfiguration, File>> configurations = new HashMap<> ();
 
@@ -17,7 +17,7 @@ public class Configurations
 
     private final Plugin plugin;
 
-    public Configurations(Plugin plugin, String... configurationsNames)
+    public Files(Plugin plugin, String... configurationsNames)
     {
         this.plugin = plugin;
 

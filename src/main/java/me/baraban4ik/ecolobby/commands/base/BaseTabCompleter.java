@@ -1,4 +1,4 @@
-package me.baraban4ik.ecolobby.command.base;
+package me.baraban4ik.ecolobby.commands.base;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

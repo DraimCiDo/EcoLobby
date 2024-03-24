@@ -1,112 +1,64 @@
 package me.baraban4ik.ecolobby.listeners;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
+import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
+import com.xxmicloxx.NoteBlockAPI.model.Song;
+import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
+import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import me.baraban4ik.ecolobby.EcoLobby;
+import me.baraban4ik.ecolobby.MESSAGES;
+import me.baraban4ik.ecolobby.managers.ActionManager;
 import me.baraban4ik.ecolobby.managers.ItemManager;
 import me.baraban4ik.ecolobby.utils.Chat;
 import me.baraban4ik.ecolobby.utils.Spawn;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
+import java.io.File;
 
 import static me.baraban4ik.ecolobby.EcoLobby.config;
-import static me.baraban4ik.ecolobby.EcoLobby.messages;
 
 public class JoinListener implements Listener {
-
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onPreLogin(AsyncPlayerPreLoginEvent event) {
-        // WhiteList
-        if (config.getBoolean("join_settings.whitelist.enabled")) {
-            if (!config.getStringList("join_settings.whitelist.players").contains(event.getName())) {
-
-                event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST);
-                event.setKickMessage(Chat.format(messages.getString("whitelist_kick_message"), Bukkit.getPlayer(event.getName())));
-            }
-        }
-        // BlackList
-        if (config.getBoolean("join_settings.blacklist.enabled")) {
-            if (config.getStringList("join_settings.blacklist.players").contains(event.getName())) {
-
-                event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
-                event.setKickMessage(Chat.format(messages.getString("blacklist_kick_message"), Bukkit.getPlayer(event.getName())));
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        // Hide player in TabList
-        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(EcoLobby.instance, PacketType.Play.Server.PLAYER_INFO) {
-            public void onPacketSending(PacketEvent event) {
-                event.setCancelled(config.getBoolean("tab_settings.hide_player"));
-            }
-        });
+        if (config.getBoolean("Join_and_Leave.teleport_to_spawn")) {
+            Location spawn;
 
-        // Clear chat
-        if (config.getBoolean("join_settings.clear_chat")) {
-            for (int i = 0; i < 120; ++i) player.sendMessage("");
-        }
-        // Clear inventory
-        if (config.getBoolean("join_settings.clear_inventory")) {
-            player.getInventory().clear();
-        }
+            if (player.hasPlayedBefore()) spawn = Spawn.get("main");
+            else spawn = Spawn.get("first");
 
-        // Give join items
-        ConfigurationSection items = config.getConfigurationSection("join_settings.custom_join_items.items");
-
-		if (items != null) {
-			for (String section : items.getKeys(false)) {
-				ItemStack item = ItemManager.get(player, section);
-
-				if (item != null) {
-					player.getInventory().setItem(items.getInt(section + ".slot"), item);
-				}
-			}
-		}
-
-        // Join spawn
-        if (config.getBoolean("join_settings.spawn_join")) {
-            Location spawn = Spawn.get();
             if (spawn != null) player.teleport(spawn);
         }
-
-        // MOTD Message
-        if (config.getBoolean("join_settings.motd_message")) {
-
-            List<String> motd = messages.getStringList("motd");
-
-            if (motd.isEmpty()) return;
-
-            Chat.sendMessage(motd, player);
+        if (config.getBoolean("Join_and_Leave.clear_chat")) {
+            for (int i = 0; i < 100; i++) {
+                player.sendMessage("");
+            }
         }
-        // Title MOTD message
-        if (config.getBoolean("join_settings.title_motd.enabled")) {
+        if (config.getBoolean("Join_and_Leave.music.enabled") && EcoLobby.noteBlockAPI) {
+            String track = config.getString("Join_and_Leave.music.track");
+            Song song = NBSDecoder.parse(new File(EcoLobby.instance.getDataFolder(), track));
 
-            String text = config.getString("join_settings.title_motd.title_text");
-            String subText = config.getString("join_settings.title_motd.subtitle_text");
+            RadioSongPlayer rsp = new RadioSongPlayer(song);
+            rsp.addPlayer(player);
+            rsp.setPlaying(true);
 
-            int duration = config.getInt("join_settings.title_motd.duration");
-
-            Chat.sendTitle(player, text, subText, duration);
+            String repeatMode = config.getString("Join.music.repeat", "NO");
+            if (repeatMode.equalsIgnoreCase("YES")) {
+                rsp.setRepeatMode(RepeatMode.ALL);
+            }
+            rsp.setRepeatMode(RepeatMode.valueOf(repeatMode));
         }
-        // Action bar MOTD message
-        if (config.getBoolean("join_settings.action_bar_motd.enabled")) {
-            Chat.sendActionBar(player, config.getString("join_settings.action_bar_motd.text"));
+        ItemManager.setItems(player);
+        ActionManager.execute(player, config.getStringList("Join_and_Leave.actions"));
+
+        if (EcoLobby.updateAvailable) {
+            if (player.hasPermission("ecolobby.notify") || player.isOp()) {
+                Chat.sendMessage(MESSAGES.NEW_VERSION, player);
+            }
         }
     }
 }
