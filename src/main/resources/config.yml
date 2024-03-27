@@ -18,10 +18,12 @@
 #  For anything with an "actions" parameter
 #
 #  * "[MSG] msg" - Send a message to a player
+#  * "[BROADCAST] msg" - Sends a message to all players on the server
 #  * "[TITLE] msg;sub_msg" - Send a message to the player as a title
 #  * "[ACTIONBAR]" - Send a message to the player as an action-bar
 #  * "[PLAYER] command" - Execute the command as player
 #  * "[CONSOLE] command" - Execute the command as console
+#  * "[CONNECT] server" - Switches to BungeeCord or Velocity server
 #  * "[SOUND] sound;volume;pitch" - Play a sound for the player
 #  * "[TELEPORT_TO_SPAWN]" - Teleport a player to a spawn
 
@@ -49,15 +51,15 @@ Join_and_Leave:
   teleport_to_spawn: true
   # Actions to when joining a server
   actions:
-    - "[TITLE]&aWELCOME;&7Thanks for using EcoLobby."
+    - "[TITLE]&aWELCOME %player%;&7Thanks for using EcoLobby."
     - "[MSG]"
-    - "[MSG]           &aEcoLobby"
-    - "[MSG]  &7Thanks for using EcoLobby."
+    - "[MSG]  &aEcoLobby"
+    - "[MSG]  &7Thanks for using EcoLobby"
     - "[MSG]"
-    - "[MSG]           &fWelcome!"
-    - "[MSG] &fYou've joined the Main Lobby."
+    - "[MSG]  &fWelcome!"
+    - "[MSG]  &fYou've joined the Main Lobby."
     - "[MSG]"
-    - "[MSG]&fServer site: &aᴡᴡᴡ.sᴇʀᴠᴇʀɴᴀᴍᴇ.ᴄᴏᴍ"
+    - "[MSG]  &fServer site: &aᴡᴡᴡ.sᴇʀᴠᴇʀɴᴀᴍᴇ.ᴄᴏᴍ"
     - "[MSG]"
   # Play music when joining a server
   # NoteBlockAPI required
@@ -83,7 +85,7 @@ Player:
   health: 2
   # Player's hunger amount
   food_level: 20
-  level_exp: 993
+  level_exp: 0
   # Player effects such as: SPEED
   # USAGE: 'EFFECT:LEVEL'
   effects: []
@@ -151,3 +153,19 @@ Hiders:
   hide_stream: true
   # Hide the players from each other
   hide_players: true
+
+# Works with version 1.13 and higher
+TabList:
+  # TabList update time in seconds
+  refresh: 1
+  header:
+    - "                                                          "
+    - "&a&lsᴇʀᴠᴇʀɴᴀᴍᴇ"
+    - ""
+    - "&aOnline:"
+    - "&7%online%"
+    - ""
+  footer:
+    - ""
+    - "&aᴡᴡᴡ.sᴇʀᴠᴇʀɴᴀᴍᴇ.ᴄᴏᴍ"
+    - ""
