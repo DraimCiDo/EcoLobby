@@ -1,5 +1,6 @@
 package me.baraban4ik.ecolobby.managers;
 
+import me.baraban4ik.ecolobby.EcoLobby;
 import me.baraban4ik.ecolobby.utils.Chat;
 import me.baraban4ik.ecolobby.utils.Format;
 import me.baraban4ik.ecolobby.utils.Spawn;
@@ -9,6 +10,8 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.util.List;
 
 
@@ -24,9 +27,30 @@ public class ActionManager {
                 action = replaceVoid(action, player, "[CONSOLE]");
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), action);
             }
+            else if (actionType(action, "[CONNECT]")) {
+                action = replaceVoid(action, player, "[CONNECT]");
+                ByteArrayOutputStream data = new ByteArrayOutputStream();
+                DataOutputStream out = new DataOutputStream(data);
+                try {
+                    out.writeUTF("Connect");
+                    out.writeUTF(action);
+                } catch (Exception ignored) {}
+                player.sendPluginMessage(EcoLobby.instance, "BungeeCord", data.toByteArray());
+                try {
+                    out.close();
+                    data.close();
+                } catch (Exception ignored) {}
+            }
             else if (actionType(action, "[MSG]")) {
                 action = replaceVoid(action, player, "[MSG]");
                 player.sendMessage(Format.format(action, player));
+
+            }
+            else if (actionType(action, "[BROADCAST]")) {
+                action = replaceVoid(action, player, "[BROADCAST]");
+                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    onlinePlayer.sendMessage(Format.format(action, player));
+                }
             }
             else if (actionType(action, "[TELEPORT_TO_SPAWN]")) {
                 Location spawn = Spawn.get("main");
