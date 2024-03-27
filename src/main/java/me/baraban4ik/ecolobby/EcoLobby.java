@@ -5,11 +5,13 @@ import me.baraban4ik.ecolobby.commands.SetSpawnCommand;
 import me.baraban4ik.ecolobby.commands.SpawnCommand;
 import me.baraban4ik.ecolobby.commands.base.BaseTabCompleter;
 import me.baraban4ik.ecolobby.listeners.*;
+import me.baraban4ik.ecolobby.managers.TabManager;
 import me.baraban4ik.ecolobby.utils.Files;
 import me.baraban4ik.ecolobby.utils.Update;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -50,6 +52,7 @@ public final class EcoLobby extends JavaPlugin {
         this.loadConfigurations();
     }
 
+    TabManager tab = new TabManager();
     @Override
     public void onEnable() {
 
@@ -66,6 +69,18 @@ public final class EcoLobby extends JavaPlugin {
         Metrics metrics = new Metrics(this, 14978);
 
         sendMessage(MESSAGES.ENABLE_MESSAGE, Bukkit.getConsoleSender());
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+
+        if (getServerVersion() >= 1.13) {
+            tab.setHeader(config.getStringList("TabList.header"));
+            tab.setFooter(config.getStringList("TabList.footer"));
+
+            Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    tab.update(player);
+                }
+            }, 0L, config.getInt("TabList.refresh") * 20L);
+        }
     }
 
     @Override
@@ -111,6 +126,11 @@ public final class EcoLobby extends JavaPlugin {
     public void reload() {
         this.files.reload();
         this.loadConfigurations();
+
+        if (getServerVersion() >= 1.13) {
+            tab.setHeader(config.getStringList("TabList.header"));
+            tab.setFooter(config.getStringList("TabList.footer"));
+        }
     }
 
     private void loadLanguage() {
