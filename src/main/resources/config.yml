@@ -140,6 +140,17 @@ Player:
       disable_pickup: true
 
 World:
+  # Set the time in worlds
+  time: 6000
+  # Setting game rules in the worlds is the same as the /gamerule command
+  # Get the game rules from here https://minecraft.fandom.com/wiki/Game_rule
+  # FORMAT:
+  # * RULE: VALUE
+  rules:
+    doDaylightCycle: false
+    doWeatherCycle: false
+    doMobSpawning: false
+    
   jump_into_the_void:
     enabled: true
     # The height at which this should work

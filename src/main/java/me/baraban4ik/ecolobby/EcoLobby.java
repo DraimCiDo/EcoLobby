@@ -10,6 +10,9 @@ import me.baraban4ik.ecolobby.utils.Files;
 import me.baraban4ik.ecolobby.utils.Update;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.GameRule;
+import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -81,6 +84,7 @@ public final class EcoLobby extends JavaPlugin {
                 }
             }, 0L, config.getInt("TabList.refresh") * 20L);
         }
+        updateWorld();
     }
 
     @Override
@@ -103,7 +107,16 @@ public final class EcoLobby extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new WorldListener(), this);
     }
 
+    private void updateWorld() {
+        for (World world : Bukkit.getWorlds()) {
+            world.setTime(config.getLong("World.time"));
+            ConfigurationSection rules = config.getConfigurationSection("World.rules");
 
+            for (String rule : rules.getKeys(false)) {
+                world.setGameRuleValue(rule, rules.getString(rule));
+            }
+        }
+    }
 
     private void checkUpdate() {
         new Update().getVersion(version ->
@@ -131,6 +144,7 @@ public final class EcoLobby extends JavaPlugin {
             tab.setHeader(config.getStringList("TabList.header"));
             tab.setFooter(config.getStringList("TabList.footer"));
         }
+        updateWorld();
     }
 
     private void loadLanguage() {
