@@ -6,3 +6,6 @@
 [Github releases](https://github.com/Baraban4ik/EcoLobby/releases)
 ## BUGS AND FEEDBACK:
 For bugs, questions and discussions please use the [Github Issues](https://github.com/Baraban4ik/EcoLobby/issues).
+
+## ФОРК
+Версия специально изменена для WILLOW STUDIO ♥
