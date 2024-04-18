@@ -164,19 +164,3 @@ Hiders:
   hide_stream: true
   # Hide the players from each other
   hide_players: true
-
-# Works with version 1.13 and higher
-TabList:
-  # TabList update time in seconds
-  refresh: 1
-  header:
-    - "                                                          "
-    - "&a&lsᴇʀᴠᴇʀɴᴀᴍᴇ"
-    - ""
-    - "&aOnline:"
-    - "&7%online%"
-    - ""
-  footer:
-    - ""
-    - "&aᴡᴡᴡ.sᴇʀᴠᴇʀɴᴀᴍᴇ.ᴄᴏᴍ"
-    - ""
